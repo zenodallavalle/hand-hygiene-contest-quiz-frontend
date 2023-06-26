@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import useSound from 'use-sound';
+
+import { Icon } from '@iconify/react';
+import volumeX from '@iconify/icons-lucide/volume-x';
+import volume2 from '@iconify/icons-lucide/volume-2';
 
 import Bacterium from './components/Bacterium';
 import Start from './components/Start';
@@ -16,7 +21,12 @@ import {
 } from './bacteriumFns';
 
 import './App.css';
-// import AutoBlurButton from './components/AutoBlurButton';
+import AutoBlurButton from './components/AutoBlurButton';
+
+// Audio assets
+import finished from './assets/sounds/finished.mp3';
+import flameThrower from './assets/sounds/flameThrower.mp3';
+import poppin from './assets/sounds/poppin.mp3';
 
 const bacteriaOptions = {
   numberOfInitialBacteria: 50,
@@ -101,7 +111,18 @@ function App() {
     };
   }, [bacteria]);
 
+  // Audio
+  const [audio, setAudio] = useState(true);
+  const [playFinished] = useSound(finished, { interrupt: true });
+  const [playFlameThrower] = useSound(flameThrower, { interrupt: true });
+  const [playPoppin] = useSound(poppin, {
+    playbackRate: Math.pow(1.1, questionIndex - marks - 1),
+    interrupt: true,
+  });
+
+  // Handlers for Quiz
   const onWrongAnswer = () => {
+    if (audio) playPoppin();
     const updatedBacteria = increaseBacteria(
       bacteria.cycle,
       bacteria.bacteria,
@@ -115,6 +136,7 @@ function App() {
   };
 
   const onRightAnswer = () => {
+    if (audio) playFlameThrower();
     const updatedBacteria = decreaseBacteria(
       bacteria.cycle,
       bacteria.bacteria,
@@ -135,6 +157,10 @@ function App() {
         ),
       }));
     }, bacteriaOptions.explosionOptions.duration);
+  };
+
+  const onFinished = () => {
+    if (audio) playFinished();
   };
 
   const onStartOver = () => {
@@ -179,6 +205,21 @@ function App() {
           </AutoBlurButton>
         </section> */}
 
+        <div style={{ position: 'absolute', zIndex: 100, left: 0, top: 0 }}>
+          <AutoBlurButton
+            style={{ zIndex: 100 }}
+            size='lg'
+            className='p-2'
+            onClick={() => setAudio(!audio)}
+            variant='dark'
+          >
+            <Icon
+              className='text-light fw-bold'
+              icon={audio ? volumeX : volume2}
+            />
+          </AutoBlurButton>
+        </div>
+
         <section
           style={{
             backgroundColor: 'transparent',
@@ -207,6 +248,7 @@ function App() {
               setMarks={setMarks}
               onWrongAnswer={onWrongAnswer}
               onRightAnswer={onRightAnswer}
+              onFinished={onFinished}
             />
           ) : (
             <Result marks={marks} onStartOver={onStartOver} />

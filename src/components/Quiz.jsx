@@ -25,6 +25,7 @@ const Quiz = ({
   setMarks,
   onWrongAnswer = () => {},
   onRightAnswer = () => {},
+  onFinished = () => {},
   ...props
 }) => {
   const {
@@ -57,14 +58,18 @@ const Quiz = ({
     if (id !== answer) onWrongAnswer();
     else onRightAnswer();
 
-    if (questionIndex + 1 >= quizs.length)
+    if (questionIndex + 1 >= quizs.length) {
       collectResult(nickname, id === answer ? marks + 1 : marks);
+    }
   };
 
   const onNextQuestion = () => {
     if (!selectedAnswer) return;
     setQuestionIndex(questionIndex + 1);
     setSelectedAnswer(null);
+
+    // trigger side effects
+    if (questionIndex + 1 >= quizs.length) onFinished();
   };
 
   return (
