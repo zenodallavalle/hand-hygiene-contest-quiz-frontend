@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import Bacterium from './components/Bacterium';
@@ -24,7 +24,7 @@ const bacteriaOptions = {
   movePerSecond: 10,
   inclinationPeriodMs: 500, // ms
   inclinationAngle: 2.5,
-  casualChangeMaxAngle: 8,
+  casualChangeMaxAngle: 10,
   directionChangeInterval: 800, //ms
   clockwiseChangeInterval: 15000, //ms
   increasePct: 0.2, // add 25% more bacteria when a wrong answer is given
@@ -142,15 +142,6 @@ function App() {
     setQuestionIndex(-1);
     setMarks(0);
   };
-
-  // for logging purposes
-  const previousNumberOfBacteria = useRef(null);
-  useEffect(() => {
-    if (previousNumberOfBacteria.current !== bacteria.bacteria.length) {
-      previousNumberOfBacteria.current = bacteria.bacteria.length;
-      console.log('bacteria.bacteria.length', bacteria.bacteria.length);
-    }
-  });
 
   return (
     <GoogleReCaptchaProvider
