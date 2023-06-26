@@ -1,118 +1,228 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+
+import Bacterium from './components/Bacterium';
 import Start from './components/Start';
 import Quiz from './components/Quiz';
 import Result from './components/Result';
 
+import { quizs } from './source';
+import {
+  calculateBacteriaPositionForCycle,
+  generateBacteria,
+  increaseBacteria,
+  decreaseBacteria,
+  removeBacteria,
+} from './bacteriumFns';
+
+import './App.css';
+// import AutoBlurButton from './components/AutoBlurButton';
+
+const bacteriaOptions = {
+  numberOfInitialBacteria: 50,
+  refreshTimeout: 33, //ms --> 1000/33 = 30fps
+  movePerSecond: 10,
+  inclinationPeriodMs: 500, // ms
+  inclinationAngle: 2.5,
+  casualChangeMaxAngle: 8,
+  directionChangeInterval: 800, //ms
+  clockwiseChangeInterval: 15000, //ms
+  increasePct: 0.2, // add 25% more bacteria when a wrong answer is given
+  minIncreaseNumber: 3,
+  maxNumberOfBacteria: 258,
+  increaseDirectionAngleChange: 30, // angle delta when bacterium is duplicated
+  decreasePct: 0.25,
+  minDecreaseNumber: 3,
+  explosionOptions: {
+    force: 0.2,
+    duration: 1600,
+    particleCount: 5,
+    width: 250,
+  },
+  explosionColors1: [
+    '#FF7226',
+    '#FF9E46',
+    '#FFD15D',
+    '#F56E92',
+    '#F23E6D',
+    '#BD0D38',
+  ],
+  explosionColors2: [
+    '#039BE5',
+    '#26C6DA',
+    '#9CCC65',
+    '#4CAF50',
+    '#FFB300',
+    '#1B5E20',
+  ],
+};
+
+// Derived options
+bacteriaOptions.casualDirectionChangePeriod =
+  bacteriaOptions.directionChangeInterval / bacteriaOptions.refreshTimeout; // cycles
+bacteriaOptions.clockwiseChangePeriod =
+  bacteriaOptions.clockwiseChangeInterval / bacteriaOptions.refreshTimeout; // cycles,
+bacteriaOptions.movePerCycle =
+  (bacteriaOptions.movePerSecond * bacteriaOptions.refreshTimeout) / 1000;
+bacteriaOptions.inclinationPeriod =
+  bacteriaOptions.inclinationPeriodMs / bacteriaOptions.refreshTimeout; // in cycles
+
+const initialSetOfBacteria = generateBacteria(bacteriaOptions);
+
+// App Fn
 function App() {
-  // All Quizs, Current Question, Index of Current Question, Answer, Selected Answer, Total Marks
-  const [quizs, setQuizs] = useState([]);
-  const [question, setQuesion] = useState({});
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [correctAnswer, setCorrectAnswer] = useState('');
-  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [questionIndex, setQuestionIndex] = useState(-1);
   const [marks, setMarks] = useState(0);
+  const [nickname, setNickname] = useState(
+    localStorage.getItem('nickname') || ''
+  );
 
-  // Display Controlling States
-  const [showStart, setShowStart] = useState(true);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [showResult, setShowResult] = useState(false);
-
-  // Load JSON Data
   useEffect(() => {
-    fetch('quiz.json')
-      .then(res => res.json())
-      .then(data => setQuizs(data))
-  }, []);
+    if (localStorage.getItem('nickname') !== nickname) {
+      localStorage.setItem('nickname', nickname);
+    }
+  }, [nickname]);
 
-  // Set a Single Question
+  // Bacteria
+  const [bacteria, setBacteria] = useState(initialSetOfBacteria);
+
   useEffect(() => {
-    if (quizs.length > questionIndex) {
-      setQuesion(quizs[questionIndex]);
-    }
-  }, [quizs, questionIndex])
+    const timeoutReference = setTimeout(() => {
+      setBacteria(
+        calculateBacteriaPositionForCycle(
+          bacteria.cycle + 1,
+          bacteria.bacteria,
+          bacteriaOptions
+        )
+      );
+    }, bacteriaOptions.refreshTimeout);
+    return () => {
+      clearTimeout(timeoutReference);
+    };
+  }, [bacteria]);
 
-  // Start Quiz
-  const startQuiz = () => {
-    setShowStart(false);
-    setShowQuiz(true);
-  }
+  const onWrongAnswer = () => {
+    const updatedBacteria = increaseBacteria(
+      bacteria.cycle,
+      bacteria.bacteria,
+      bacteriaOptions
+    );
 
-  // Check Answer
-  const checkAnswer = (event, selected) => {
-    if (!selectedAnswer) {
-      setCorrectAnswer(question.answer);
-      setSelectedAnswer(selected);
+    setBacteria({
+      cycle: bacteria.cycle,
+      bacteria: updatedBacteria,
+    });
+  };
 
-      if (selected === question.answer) {
-        event.target.classList.add('bg-success');
-        setMarks(marks + 5);
-      } else {
-        event.target.classList.add('bg-danger');
-      }
-    }
-  }
+  const onRightAnswer = () => {
+    const updatedBacteria = decreaseBacteria(
+      bacteria.cycle,
+      bacteria.bacteria,
+      bacteriaOptions
+    );
 
-  // Next Quesion
-  const nextQuestion = () => {
-    setCorrectAnswer('');
-    setSelectedAnswer('');
-    const wrongBtn = document.querySelector('button.bg-danger');
-    wrongBtn?.classList.remove('bg-danger');
-    const rightBtn = document.querySelector('button.bg-success');
-    rightBtn?.classList.remove('bg-success');
-    setQuestionIndex(questionIndex + 1);
-  }
+    setBacteria({
+      cycle: bacteria.cycle,
+      bacteria: updatedBacteria,
+    });
 
-  // Show Result
-  const showTheResult = () => {
-    setShowResult(true);
-    setShowStart(false);
-    setShowQuiz(false);
-  }
+    setTimeout(() => {
+      setBacteria((bacteria) => ({
+        cycle: bacteria.cycle,
+        bacteria: removeBacteria(
+          bacteria.bacteria,
+          updatedBacteria.filter((b) => b.isExploding).map(({ id }) => id)
+        ),
+      }));
+    }, bacteriaOptions.explosionOptions.duration);
+  };
 
-  // Start Over
-  const startOver = () => {
-    setShowStart(false);
-    setShowResult(false);
-    setShowQuiz(true);
-    setCorrectAnswer('');
-    setSelectedAnswer('');
-    setQuestionIndex(0);
+  const onStartOver = () => {
+    setBacteria(generateBacteria(bacteriaOptions));
+    setQuestionIndex(-1);
     setMarks(0);
-    const wrongBtn = document.querySelector('button.bg-danger');
-    wrongBtn?.classList.remove('bg-danger');
-    const rightBtn = document.querySelector('button.bg-success');
-    rightBtn?.classList.remove('bg-success');
-  }
+  };
+
+  // for logging purposes
+  const previousNumberOfBacteria = useRef(null);
+  useEffect(() => {
+    if (previousNumberOfBacteria.current !== bacteria.bacteria.length) {
+      previousNumberOfBacteria.current = bacteria.bacteria.length;
+      console.log('bacteria.bacteria.length', bacteria.bacteria.length);
+    }
+  });
 
   return (
-    <>
-      {/* Welcome Page */}
-      <Start
-        startQuiz={startQuiz}
-        showStart={showStart}
-      />
+    <GoogleReCaptchaProvider
+      reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}
+      useEnterprise
+    >
+      <section
+        className='bg-dark text-white w-100 h-100'
+        style={{ position: 'absolute', left: 0, top: 0 }}
+      >
+        <div>
+          {questionIndex < quizs.length &&
+            bacteria.bacteria?.map(({ ...bacterium }) => (
+              <Bacterium
+                key={`bacterium_${bacterium.id}`}
+                bacterium={bacterium}
+                options={bacteriaOptions}
+              />
+            ))}
+        </div>
 
-      {/* Quiz Page */}
-      <Quiz
-        showQuiz={showQuiz}
-        question={question}
-        quizs={quizs}
-        checkAnswer={checkAnswer}
-        correctAnswer={correctAnswer}
-        selectedAnswer={selectedAnswer}
-        questionIndex={questionIndex}
-        nextQuestion={nextQuestion}
-        showTheResult={showTheResult}
-      />
+        {/* <section
+          style={{
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+          }}
+        >
+          <AutoBlurButton onClick={onRightAnswer} variant='success'>
+            S
+          </AutoBlurButton>
+          <AutoBlurButton onClick={onWrongAnswer} variant='danger'>
+            D
+          </AutoBlurButton>
+        </section> */}
 
-      {/* Result Page */}
-      <Result
-        showResult={showResult}
-        quizs={quizs}
-        marks={marks}
-        startOver={startOver} />
-    </>
+        <section
+          style={{
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            overflowY: 'scroll',
+          }}
+          className='text-center w-100'
+        >
+          {questionIndex === -1 ? (
+            <Start
+              nickname={nickname}
+              setNickname={setNickname}
+              setQuestionIndex={setQuestionIndex}
+              setMarks={setMarks}
+            />
+          ) : questionIndex < quizs.length ? (
+            <Quiz
+              nickname={nickname}
+              setNickname={setNickname}
+              questionIndex={questionIndex}
+              setQuestionIndex={setQuestionIndex}
+              marks={marks}
+              setMarks={setMarks}
+              onWrongAnswer={onWrongAnswer}
+              onRightAnswer={onRightAnswer}
+            />
+          ) : (
+            <Result marks={marks} onStartOver={onStartOver} />
+          )}
+        </section>
+      </section>
+    </GoogleReCaptchaProvider>
   );
 }
 
