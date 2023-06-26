@@ -49,10 +49,6 @@ const Result = ({ marks, onStartOver }) => {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(true);
-  }, []);
-
   return (
     <div className='container'>
       <div className='row vh-100 align-items-center justify-content-center'>

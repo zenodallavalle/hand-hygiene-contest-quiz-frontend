@@ -5,12 +5,18 @@ import AutoBlurButton from './AutoBlurButton';
 
 import { useCollectStart } from '../api';
 
-const Start = ({ nickname, setNickname, setQuestionIndex, setMarks }) => {
+const Start = ({
+  quizUID,
+  nickname,
+  setNickname,
+  setQuestionIndex,
+  setMarks,
+}) => {
   const [clicked, setCliked] = useState(false);
 
   const onStartQuiz = () => {
     if (!nickname.trim()) return setCliked(true);
-    collectStart(nickname.trim());
+    collectStart(quizUID, nickname.trim());
     setQuestionIndex(0);
     setMarks(0);
   };

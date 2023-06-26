@@ -18,6 +18,7 @@ const getVariantForBtn = (optionId, selectedAnswer, correctAnswer) => {
 };
 
 const Quiz = ({
+  quizUID,
   nickname,
   questionIndex = 0,
   setQuestionIndex,
@@ -49,7 +50,7 @@ const Quiz = ({
   const onSelectOption = (id, text) => {
     if (selectedAnswer) return;
     setSelectedAnswer(id);
-    collectAnswer(nickname, questionId, id, question, text);
+    collectAnswer(quizUID, nickname, questionId, id, question, text);
 
     // update Marks
     if (id === answer) setMarks(marks + 1);
@@ -59,7 +60,7 @@ const Quiz = ({
     else onRightAnswer();
 
     if (questionIndex + 1 >= quizs.length) {
-      collectResult(nickname, id === answer ? marks + 1 : marks);
+      collectResult(quizUID, nickname, id === answer ? marks + 1 : marks);
     }
   };
 

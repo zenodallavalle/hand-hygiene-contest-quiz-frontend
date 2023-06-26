@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import useSound from 'use-sound';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Icon } from '@iconify/react';
 import volumeX from '@iconify/icons-lucide/volume-x';
@@ -83,6 +84,7 @@ const initialSetOfBacteria = generateBacteria(bacteriaOptions);
 function App() {
   const [questionIndex, setQuestionIndex] = useState(-1);
   const [marks, setMarks] = useState(0);
+  const [quizUID, setQuizUID] = useState(uuidv4());
   const [nickname, setNickname] = useState(
     localStorage.getItem('nickname') || ''
   );
@@ -167,6 +169,7 @@ function App() {
     setBacteria(generateBacteria(bacteriaOptions));
     setQuestionIndex(-1);
     setMarks(0);
+    setQuizUID(uuidv4());
   };
 
   return (
@@ -233,6 +236,7 @@ function App() {
         >
           {questionIndex === -1 ? (
             <Start
+              quizUID={quizUID}
               nickname={nickname}
               setNickname={setNickname}
               setQuestionIndex={setQuestionIndex}
@@ -240,6 +244,7 @@ function App() {
             />
           ) : questionIndex < quizs.length ? (
             <Quiz
+              quizUID={quizUID}
               nickname={nickname}
               setNickname={setNickname}
               questionIndex={questionIndex}
