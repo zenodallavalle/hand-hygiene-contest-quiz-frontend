@@ -1,13 +1,13 @@
 import { shuffleArray } from './shuffle';
 
-const round = (number, decimals = 4) => {
+export const round = (number, decimals = 4) => {
   return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
 };
 
 let bacteriaLatestID = 1;
 
 export const generateBacteria = (
-  { numberOfInitialBacteria, ...options },
+  { numberOfInitialBacteria, baseDimension, ...options },
   caller = undefined
 ) => {
   const bacteria = [];
@@ -21,6 +21,7 @@ export const generateBacteria = (
       y: round(Math.random() * (100 - 0) + 0),
       initialDirection,
       direction: initialDirection,
+      dimension: baseDimension,
     });
   }
 
@@ -33,6 +34,40 @@ const generateChange = (casualChangeMaxAngle, clockwise) =>
       (clockwise ? casualChangeMaxAngle : 0)
   );
 
+const ensurePositionIsOk = ({ x: _x, y: _y }) => {
+  let x = _x;
+  let y = _y;
+
+  if (x < -10) {
+    x = 100;
+  } else if (x > 100) {
+    x = -10;
+  }
+  if (y < -10) {
+    y = 100;
+  } else if (y > 100) {
+    y = -10;
+  }
+
+  return { x, y };
+};
+
+const calculateNewPosition = (
+  cycle,
+  { x, y, initialDirection, ...bacterium },
+  { movePerCycle, inclinationPeriod, inclinationAngle, ...options }
+) => ({
+  correction: round(
+    Math.cos((cycle / inclinationPeriod) * Math.PI * 2) * inclinationAngle
+  ),
+  deltaX: round(
+    Math.cos((initialDirection + 90) * (Math.PI / 180)) * movePerCycle
+  ),
+  deltaY: round(
+    Math.sin((initialDirection + 90) * (Math.PI / 180)) * movePerCycle
+  ),
+});
+
 export const calculateBacteriaPositionForCycle = (
   cycle,
   bacteria,
@@ -40,54 +75,179 @@ export const calculateBacteriaPositionForCycle = (
     casualChangeMaxAngle,
     casualDirectionChangePeriod,
     clockwiseChangePeriod,
-    movePerCycle,
-    inclinationAngle,
-    inclinationPeriod,
+    baseDimension,
+    dimensionBeforeExploding,
+    explosionDelayCycles,
+    dimensionBeforeDuplicating,
+    increasingHighligthFadeInDurationCycles,
+    translationMovePerCycleDuringDuplication,
+    increasingHighligthFadeOutDurationCycles,
     ...options
   }
 ) => {
-  const updatedBacteria = bacteria.map((bacterium) => {
-    let { x, y, direction, initialDirection } = bacterium;
+  let clockwise = cycle % clockwiseChangePeriod > clockwiseChangePeriod / 2;
+  const toPush = [];
+  const updatedBacteria = bacteria
+    .filter(({ explodedOn }) => !(cycle >= explodedOn))
+    .map((bacterium) => {
+      let {
+        direction,
+        initialDirection,
+        explodesOn,
+        explodedOn,
+        duplicatesOn,
+        duplicatedOn,
+        startsMovingOn,
+      } = bacterium;
 
-    if (cycle % casualDirectionChangePeriod === 0) {
-      const clockwise =
-        cycle % clockwiseChangePeriod > clockwiseChangePeriod / 2;
-      const change = generateChange(casualChangeMaxAngle, clockwise);
-      initialDirection = initialDirection + change;
-      direction = direction + change;
-    }
+      // explosion
+      if (explodesOn || explodedOn) {
+        // explosion is about to start
+        if (cycle < explodesOn) {
+          let t =
+            (explosionDelayCycles - (explodesOn - cycle)) /
+            explosionDelayCycles;
+          if (t > 1) {
+            t = 1;
+          }
+          const alpha = round(t * t);
+          const newDimension = round(
+            (dimensionBeforeExploding - baseDimension) * alpha + baseDimension
+          );
+          return {
+            ...bacterium,
+            dimension: newDimension,
+          };
+        } else if (cycle < explodedOn) {
+          // explosion already started do nothing
+          return { ...bacterium };
+        } else {
+          throw new Error('Exploded bacterium should have been filtered out.');
+        }
+      }
 
-    const correction = round(
-      Math.cos((cycle / inclinationPeriod) * Math.PI * 2) * inclinationAngle
-    );
+      // duplication
+      if (duplicatesOn || duplicatedOn || startsMovingOn) {
+        // highlight the bacterium that is about to be duplicated
+        if (cycle < duplicatesOn) {
+          let t =
+            (increasingHighligthFadeInDurationCycles - (duplicatesOn - cycle)) /
+            increasingHighligthFadeInDurationCycles;
+          if (t > 1) {
+            t = 1;
+          }
+          const alpha = round(t * t);
+          const newDimension = round(
+            (dimensionBeforeDuplicating - baseDimension) * alpha + baseDimension
+          );
 
-    x =
-      x +
-      round(Math.cos((initialDirection + 90) * (Math.PI / 180)) * movePerCycle);
-    if (x < -10) {
-      x = 100;
-    } else if (x > 100) {
-      x = -10;
-    }
+          const {
+            // x: newX,
+            // y: newY,
+            correction,
+          } = calculateNewPosition(
+            cycle,
+            { initialDirection, ...bacterium },
+            { ...options }
+          );
+          return {
+            ...bacterium,
+            // x: newX,
+            // y: newY,
+            direction: direction + correction,
+            dimension: newDimension,
+          };
+        } else if (cycle === duplicatesOn) {
+          // create the copy in those exact frame. Copies will have the same position and direction as originals. Also they will have the same value for duplicatedOn etc
+          bacterium.dimension = dimensionBeforeDuplicating; // this is needed because the dimension is not updated in the previous if
+          bacterium.duplicatesOn = undefined;
+          toPush.push({
+            ...bacterium,
+            id: bacteriaLatestID++,
+            isCopy: !bacterium.isCopy,
+          });
+          return { ...bacterium };
+        } else if (cycle < duplicatedOn) {
+          // use duplicatedOn to calculate clockwise so that will be consistent during the whole duplication
+          clockwise = cycle % duplicatedOn > duplicatedOn / 2;
+          // The actual duplication
+          const traslation =
+            direction + (clockwise ? 90 : -90) + (bacterium.isCopy ? 180 : 0);
+          const { deltaX, deltaY } = calculateNewPosition(
+            // correction will be NaN because in options there is only movePerCycle
+            cycle,
+            { ...bacterium, initialDirection: traslation },
+            { movePerCycle: translationMovePerCycleDuringDuplication * 1.41 } //because the move is diagonal
+          );
+          return {
+            ...bacterium,
+            ...ensurePositionIsOk({
+              x: bacterium.x + deltaX,
+              y: bacterium.y + deltaY,
+            }),
+          };
+        } else if (cycle === duplicatedOn) {
+          // simply reset the duplicatedOn value
+          return { ...bacterium, duplicatedOn: undefined };
+        } else if (cycle < startsMovingOn) {
+          // back to normal dimensions
+          let t =
+            (increasingHighligthFadeOutDurationCycles -
+              (startsMovingOn - cycle)) /
+            increasingHighligthFadeOutDurationCycles;
+          if (t > 1) {
+            t = 1;
+          }
+          const alpha = 1 - round(t * t);
+          const newDimension = round(
+            (dimensionBeforeDuplicating - baseDimension) * alpha + baseDimension
+          );
+          const {
+            // x: newX,
+            // y: newY,
+            correction,
+          } = calculateNewPosition(
+            cycle,
+            { initialDirection, ...bacterium },
+            { ...options }
+          );
+          return {
+            ...bacterium,
+            // x: newX,
+            // y: newY,
+            direction: direction + correction,
+            dimension: newDimension,
+          };
+        } else if (cycle === startsMovingOn) {
+          bacterium.dimension = baseDimension; // this is needed because the dimension is not updated in the previous if
+          bacterium.startsMovingOn = undefined;
+        }
+      }
 
-    y =
-      y +
-      round(Math.sin((initialDirection + 90) * (Math.PI / 180)) * movePerCycle);
+      // basic casual direction change
+      if (cycle % casualDirectionChangePeriod === 0) {
+        const change = generateChange(casualChangeMaxAngle, clockwise);
+        initialDirection = initialDirection + change;
+        direction = direction + change;
+      }
 
-    if (y < -10) {
-      y = 100;
-    } else if (y > 100) {
-      y = -10;
-    }
+      const { deltaX, deltaY, correction } = calculateNewPosition(
+        cycle,
+        { initialDirection, ...bacterium },
+        options
+      );
+      return {
+        ...bacterium,
+        ...ensurePositionIsOk({
+          x: bacterium.x + deltaX,
+          y: bacterium.y + deltaY,
+        }),
+        direction: direction + correction,
+        initialDirection,
+      };
+    });
 
-    return {
-      ...bacterium,
-      x,
-      y,
-      direction: direction + correction,
-      initialDirection,
-    };
-  });
+  updatedBacteria.push(...toPush);
   return { cycle, bacteria: updatedBacteria };
 };
 
@@ -100,6 +260,9 @@ export const increaseBacteria = (
     increasePct,
     minIncreaseNumber,
     increaseDirectionAngleChange,
+    increasingHighligthFadeInDurationCycles,
+    duplicationDurationCycles,
+    increasingHighligthFadeOutDurationCycles,
     ...options
   }
 ) => {
@@ -124,42 +287,57 @@ export const increaseBacteria = (
 
   const shuffledBacteria = shuffleArray(bacteria);
 
-  const updatedBacteria = [...bacteria];
-  for (let i = 0; i < numberOfBacteriaPlus; i++) {
-    const newBacterium = { ...shuffledBacteria[i], id: bacteriaLatestID++ };
-    const clockwise = cycle % clockwiseChangePeriod > clockwiseChangePeriod / 2;
-
-    const change =
-      generateChange(casualChangeMaxAngle, clockwise) +
-      increaseDirectionAngleChange * (clockwise ? 1 : -1);
-
-    newBacterium.initialDirection = newBacterium.initialDirection + change;
-    newBacterium.direction = newBacterium.direction + change;
-    updatedBacteria.push(newBacterium);
-  }
-
+  const updatedBacteria = shuffledBacteria.map((bacterium, index) => {
+    if (index >= numberOfBacteriaPlus) return bacterium;
+    return {
+      ...bacterium,
+      duplicatesOn: cycle + increasingHighligthFadeInDurationCycles,
+      duplicatedOn:
+        cycle +
+        increasingHighligthFadeInDurationCycles +
+        duplicationDurationCycles,
+      startsMovingOn:
+        cycle +
+        increasingHighligthFadeInDurationCycles +
+        duplicationDurationCycles +
+        increasingHighligthFadeOutDurationCycles,
+    };
+  });
   return updatedBacteria;
 };
-
-export const removeBacteria = (bacteria, ids = []) =>
-  bacteria.filter((bacterium) => !ids.includes(bacterium.id));
 
 export const decreaseBacteria = (
   cycle,
   bacteria,
-  { decreasePct, minDecreaseNumber, ...options }
+  {
+    decreasePct,
+    minDecreaseNumber,
+    explosionDelayCycles,
+    explosionOverallDurationCycles,
+    ...options
+  }
 ) => {
   if (!bacteria.length) {
     console.warn("bacteria's length may not be zero.");
     return bacteria;
   }
 
+  const filteredBacteria = bacteria.filter(
+    ({ explodesOn, explodedOn }) => !(explodedOn || explodesOn)
+  );
+
   let numberOfBacteriaMinus = Math.max(
-    round(bacteria.length * decreasePct, 0),
+    round(filteredBacteria.length * decreasePct, 0),
     minDecreaseNumber
   );
 
-  return shuffleArray(bacteria).map((b, id) =>
-    id < numberOfBacteriaMinus ? { ...b, isExploding: true } : b
+  return shuffleArray(filteredBacteria).map((b, id) =>
+    id < numberOfBacteriaMinus
+      ? {
+          ...b,
+          explodesOn: cycle + explosionDelayCycles,
+          explodedOn: cycle + explosionOverallDurationCycles,
+        }
+      : b
   );
 };

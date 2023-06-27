@@ -10,7 +10,7 @@ const getUID = () => {
   return newUID;
 };
 
-export const collectStart = async (quizUID, nickname, token) => {
+export const collectStart = async (quizUID, nickname, job, token) => {
   const url = new URL('start_event/', process.env.REACT_APP_API_URL);
   try {
     await fetch(url, {
@@ -25,6 +25,7 @@ export const collectStart = async (quizUID, nickname, token) => {
         device_uid: getUID(),
         recaptcha_token: token,
         nickname,
+        job,
       }),
     });
   } catch (error) {
@@ -35,11 +36,11 @@ export const collectStart = async (quizUID, nickname, token) => {
 export const useCollectStart = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const returnFn = useCallback(
-    async (quizUID, nickname) => {
+    async (quizUID, nickname, job) => {
       if (!executeRecaptcha) return;
       try {
         const recaptchaToken = await executeRecaptcha('collectStart');
-        collectStart(quizUID, nickname, recaptchaToken);
+        collectStart(quizUID, nickname, job, recaptchaToken);
       } catch (error) {
         console.error('Error in useCollectStart: ', error);
       }
@@ -52,6 +53,7 @@ export const useCollectStart = () => {
 const collectAnswer = async (
   quizUID,
   nickname,
+  job,
   qId,
   answerId,
   questionText,
@@ -72,6 +74,7 @@ const collectAnswer = async (
         device_uid: getUID(),
         recaptcha_token: recaptchaToken,
         nickname,
+        job,
         question_id: qId,
         answer_id: answerId,
         question_text: questionText,
@@ -86,13 +89,14 @@ const collectAnswer = async (
 export const useCollectAnswer = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const returnFn = useCallback(
-    async (quizUID, nickname, qId, answerId, questionText, answerText) => {
+    async (quizUID, nickname, job, qId, answerId, questionText, answerText) => {
       if (!executeRecaptcha) return;
       try {
         const recaptchaToken = await executeRecaptcha('collectAnswer');
         collectAnswer(
           quizUID,
           nickname,
+          job,
           qId,
           answerId,
           questionText,
@@ -108,7 +112,7 @@ export const useCollectAnswer = () => {
   return { collectAnswer: returnFn };
 };
 
-const collectResult = async (quizUID, nickname, marks, recaptchaToken) => {
+const collectResult = async (quizUID, nickname, job, marks, recaptchaToken) => {
   const url = new URL('result_event/', process.env.REACT_APP_API_URL);
   try {
     await fetch(url, {
@@ -123,6 +127,7 @@ const collectResult = async (quizUID, nickname, marks, recaptchaToken) => {
         device_uid: getUID(),
         recaptcha_token: recaptchaToken,
         nickname,
+        job,
         marks,
       }),
     });
@@ -134,11 +139,11 @@ const collectResult = async (quizUID, nickname, marks, recaptchaToken) => {
 export const useCollectResult = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const returnFn = useCallback(
-    async (quizUID, nickname, marks) => {
+    async (quizUID, nickname, job, marks) => {
       if (!executeRecaptcha) return;
       try {
         const recaptchaToken = await executeRecaptcha('collectResult');
-        collectResult(quizUID, nickname, marks, recaptchaToken);
+        collectResult(quizUID, nickname, job, marks, recaptchaToken);
       } catch (error) {
         console.error('Error in useCollectResult: ', error);
       }
