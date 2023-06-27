@@ -10,7 +10,7 @@ import cat from '../assets/img/cat.jpg';
 import koala from '../assets/img/koala.jpg';
 import skunk from '../assets/img/skunk.jpg';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const getBgColor = (marks) =>
   marks < 4 ? 'danger' : marks < 9 ? 'warning' : 'success';
