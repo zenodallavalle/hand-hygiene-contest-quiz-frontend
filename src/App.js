@@ -3,7 +3,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import useSound from 'use-sound';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Icon } from '@iconify/react';
+import { InlineIcon } from '@iconify/react';
 import volumeX from '@iconify/icons-lucide/volume-x';
 import volume2 from '@iconify/icons-lucide/volume-2';
 
@@ -192,22 +192,6 @@ function App() {
             ))}
         </div>
 
-        {/* <section
-          style={{
-            backgroundColor: 'transparent',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          }}
-        >
-          <AutoBlurButton onClick={onRightAnswer} variant='success'>
-            S
-          </AutoBlurButton>
-          <AutoBlurButton onClick={onWrongAnswer} variant='danger'>
-            D
-          </AutoBlurButton>
-        </section> */}
-
         <div style={{ position: 'absolute', zIndex: 100, left: 0, top: 0 }}>
           <AutoBlurButton
             style={{ zIndex: 100 }}
@@ -216,7 +200,7 @@ function App() {
             onClick={() => setAudio(!audio)}
             variant='dark'
           >
-            <Icon
+            <InlineIcon
               className='text-light fw-bold'
               icon={audio ? volumeX : volume2}
             />
