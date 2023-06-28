@@ -55,9 +55,7 @@ const Start = ({
       <div className='text-center row justify-content-center'>
         <div className='col-lg-10 p-2 rounded-5 bg-dark'>
           <h1 className='fw-bold mb-2'>Igiene delle mani</h1>
-          <h5 className='fw-bold mb-4'>
-            Ottieni ora il tuo badge animale unico!
-          </h5>
+          <h5 className='fw-bold mb-4'>Ottieni ora il tuo avatar!</h5>
           <Form.Control
             nickname={nickname}
             value={nickname}

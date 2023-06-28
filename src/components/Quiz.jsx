@@ -98,7 +98,7 @@ const Quiz = ({
 
   return (
     <Container>
-      <div className='row vh-100 justify-content-center'>
+      <div className='row vh-100 justify-content-center align-items-center'>
         <div className='col-lg-8'>
           <div
             className='card p-4 transition-bg'

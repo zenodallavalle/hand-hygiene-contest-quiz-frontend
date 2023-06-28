@@ -31,11 +31,13 @@ import laserGun from './assets/sounds/laserGun.mp3';
 import insectNoise from './assets/sounds/insectNoise.mp3';
 
 import { bacteriaOptions } from './bacteriaOptions';
+import ShareModal from './components/ShareModal';
 
 const initialSetOfBacteria = generateBacteria(bacteriaOptions);
 
 // App Fn
 function App() {
+  const [showShareModal, setShowShareModal] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(-1);
   const [marks, setMarks] = useState(0);
   const [quizUID, setQuizUID] = useState(uuidv4());
@@ -140,24 +142,15 @@ function App() {
   // quiz
   const quizs = useMemo(() => selectQuizForJob(job), [job]);
 
-  // ReCaptcha dark theme
-  useEffect(() => {
-    let recaptcha = document.querySelector('.g-recaptcha');
-    console.log(recaptcha);
-    document.addEventListener('DOMContentLoaded', (event) => {
-      recaptcha.setAttribute('data-theme', 'dark');
-    });
-  }, []);
-
   return (
     <div>
       <GoogleReCaptchaProvider
         reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}
         useEnterprise
       >
-        <section
-          className='bg-dark text-light w-100 h-100'
-          style={{ position: 'absolute', left: 0, top: 0 }}
+        <div
+          className='bg-dark text-light w-100 h-100 d-flex justify-content-center'
+          style={{ position: 'absolute' }}
         >
           <div>
             {questionIndex < quizs.length &&
@@ -186,10 +179,11 @@ function App() {
             </AutoBlurButton>
           </div>
 
-          <section
-            className='text-center justify-content-center d-flex w-100 mt-5'
+          <div
+            className='text-center justify-content-center d-flex h-100 align-items-center'
             style={{
               position: 'absolute',
+              overflowY: 'auto',
             }}
           >
             {questionIndex === -1 ? (
@@ -224,10 +218,17 @@ function App() {
                 quizs={quizs}
                 job={job}
                 onStartOver={onStartOver}
+                onShare={() => setShowShareModal(true)}
               />
             )}
-          </section>
-        </section>
+          </div>
+        </div>
+        <ShareModal
+          show={showShareModal}
+          onHide={() => setShowShareModal(false)}
+          marks={marks}
+          job={job}
+        />
       </GoogleReCaptchaProvider>
     </div>
   );
