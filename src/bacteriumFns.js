@@ -25,7 +25,7 @@ export const generateBacteria = (
     });
   }
 
-  return { bacteria, cycle: 0 };
+  return { bacteria, cycle: 1 };
 };
 
 const generateChange = (casualChangeMaxAngle, clockwise) =>
@@ -85,7 +85,7 @@ export const calculateBacteriaPositionForCycle = (
     ...options
   }
 ) => {
-  let clockwise = cycle % clockwiseChangePeriod > clockwiseChangePeriod / 2;
+  let clockwise = round(cycle / clockwiseChangePeriod, 0) % 2 === 0;
   const toPush = [];
   const updatedBacteria = bacteria
     .filter(({ explodedOn }) => !(cycle >= explodedOn))
@@ -169,7 +169,7 @@ export const calculateBacteriaPositionForCycle = (
           return { ...bacterium };
         } else if (cycle < duplicatedOn) {
           // use duplicatedOn to calculate clockwise so that will be consistent during the whole duplication
-          clockwise = cycle % duplicatedOn > duplicatedOn / 2;
+          clockwise = round(cycle / clockwiseChangePeriod, 0) % 2 === 0;
           // The actual duplication
           const traslation =
             direction + (clockwise ? 90 : -90) + (bacterium.isCopy ? 180 : 0);
