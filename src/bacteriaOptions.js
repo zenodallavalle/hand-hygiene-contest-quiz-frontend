@@ -5,9 +5,9 @@ const _bacteriaOptions = {
   refreshTimeout: 33, //ms --> 1000/33 = 30fps
   baseDimension: 7, // % !!
 
-  movePerSecond: 10,
+  movePerSecond: 8,
   inclinationPeriodMs: 500, // ms
-  inclinationAngle: 2.5,
+  inclinationAngle: 1.2,
   casualChangeMaxAngle: 10,
   directionChangeInterval: 800, //ms
   clockwiseChangeInterval: 15000, //ms

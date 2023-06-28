@@ -138,8 +138,16 @@ function App() {
   };
 
   // quiz
-
   const quizs = useMemo(() => selectQuizForJob(job), [job]);
+
+  // ReCaptcha dark theme
+  useEffect(() => {
+    let recaptcha = document.querySelector('.g-recaptcha');
+    console.log(recaptcha);
+    document.addEventListener('DOMContentLoaded', (event) => {
+      recaptcha.setAttribute('data-theme', 'dark');
+    });
+  }, []);
 
   return (
     <div>
@@ -148,7 +156,7 @@ function App() {
         useEnterprise
       >
         <section
-          className='bg-dark text-white w-100 h-100'
+          className='bg-dark text-light w-100 h-100'
           style={{ position: 'absolute', left: 0, top: 0 }}
         >
           <div>
@@ -179,15 +187,10 @@ function App() {
           </div>
 
           <section
+            className='text-center justify-content-center d-flex w-100 mt-5'
             style={{
-              backgroundColor: 'transparent',
               position: 'absolute',
-              top: 0,
-              left: 0,
-              zIndex: 1,
-              overflowY: 'scroll',
             }}
-            className='w-100 mt-5'
           >
             {questionIndex === -1 ? (
               <Start

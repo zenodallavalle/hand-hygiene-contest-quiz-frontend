@@ -128,7 +128,7 @@ const Quiz = ({
                   style={opacityStyle}
                   key={`q_${questionId}_o_${id}`}
                   variant={getVariantForBtn(id, selectedAnswer, answer)}
-                  className='option w-100 text-start text-white py-2 px-3 mt-3 rounded transition-opacity'
+                  className='option w-100 text-start text-light py-2 px-3 mt-3 rounded transition-opacity'
                   onClick={() => onSelectOption(id, option)}
                   disabled={!!selectedAnswer}
                 >
