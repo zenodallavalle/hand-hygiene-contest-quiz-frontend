@@ -157,7 +157,7 @@ const Quiz = ({
                 style={opacityStyle}
                 className='border mt-3 border-primary border-secondary border-1 rounded transition-opacity'
               >
-                <div className='text-light p-1'>{capitalize(explaination)}</div>
+                <div className='text-light p-1'>{explaination}</div>
               </div>
             )}
           </div>
