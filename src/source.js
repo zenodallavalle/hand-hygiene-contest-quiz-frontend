@@ -1,5 +1,13 @@
+import handHygiene from './assets/img/handHygiene.gif';
+
+import racoon from './assets/img/me_racoon.gif';
+import cat from './assets/img/me_cat.png';
+import duck from './assets/img/me_duck.png';
+import skunk from './assets/img/me_skunk2.gif';
+import igienistaCeleste from './assets/img/igienistaCeleste.gif';
+
 const sources = {
-  simpleQuiz: [
+  notHealthcareQuiz: [
     {
       id: 1,
       question:
@@ -11,122 +19,16 @@ const sources = {
         [4, 'Tutte le risposte sono corrette', { fixed: true }],
       ],
       answer: 4,
-    },
-    {
-      id: 2,
-      question: 'Quale affermazione circa l’igiene delle mani è corretta?',
-      options: [
-        [1, 'La frizione alcolica è efficace e dura 20-30 secondi', {}],
-        [
-          2,
-          'Il lavaggio sociale (acqua e sapone) è efficace e dura 40-60 secondi',
-          {},
-        ],
-        [3, 'La corretta procedura d’igiene delle mani prevede sei fasi', {}],
-        [4, 'Tutte le risposte sono corrette', { fixed: true }],
-      ],
-      answer: 4,
-    },
-    {
-      id: 3,
-      question: 'Quale affermazione circa l’igiene delle mani è corretta?',
-      options: [
-        [1, 'La frizione alcolica è efficace e dura 40-60 secondi', {}],
-        [
-          2,
-          'Il lavaggio sociale (acqua e sapone) è efficace e dura 20-30 secondi',
-          {},
-        ],
-        [3, 'La corretta procedura d’igiene delle mani prevede sei fasi', {}],
-        [4, 'Tutte le risposte sono corrette', { fixed: true }],
-      ],
-      answer: 3,
-    },
-    {
-      id: 4,
-      question: 'L’igiene delle mani:',
-      options: [
-        [
-          1,
-          'è la misura di base e più efficace per prevenire la trasmissione dei patogeni e delle infezioni',
-          {},
-        ],
-        [2, 'è applicabile solo in ambiente sanitario', {}],
-        [3, 'può essere fatta solo con soluzioni alcoliche', {}],
-        [4, 'Tutte le risposte sono corrette', { fixed: true }],
-      ],
-      answer: 1,
-    },
-    {
-      id: 5,
-      question: 'L’igiene delle mani:',
-      options: [
-        [1, 'è la misura più efficace nel controllo delle infezioni', {}],
-        [
-          2,
-          'se applicata correttamente, può prevenire tutte le infezioni nel 100% dei casi',
-          {},
-        ],
-        [
-          3,
-          'è di regola oggetto di elevata adesione tra gli operatori sanitari',
-          {},
-        ],
-        [4, 'Tutte le risposte sono corrette', { fixed: true }],
-      ],
-      answer: 1,
-    },
-    {
-      id: 6,
-      question: 'La trasmissione dei microrganismi è maggiore in caso di:',
-      options: [
-        [1, 'stretta di mano', {}],
-        [2, 'Dare il cinque', {}],
-        [3, 'fist bump - battere il pugno', {}],
-        [4, 'elbow bump - battere il gomito', {}],
-      ],
-      answer: 1,
-    },
-    {
-      id: 7,
-      question:
-        'Da quante “fasi” è composta la tecnica di igiene delle mani proposta dall’OMS?',
-      options: [
-        [1, 'Quattro', {}],
-        [2, 'Cinque', {}],
-        [3, 'Sei', {}],
-        [4, 'Sette', {}],
-      ],
-      answer: 3,
-    },
-    {
-      id: 8,
-      question:
-        'Quale dei seguenti momenti di igiene delle mani NON fa parte delle indicazioni OMS?',
-      options: [
-        [1, 'Prima del contatto con il paziente', {}],
-        [2, 'Prima del contatto con l’ambiente circostante il paziente', {}],
-        [3, 'Dopo il contatto con il paziente', {}],
-        [4, 'Dopo il contatto con l’ambiente circostante il paziente', {}],
-      ],
-      answer: 2,
-    },
-    {
-      id: 9,
-      question:
-        'Qual è una controindicazione all’uso di prodotti a base alcolica per l’igiene delle mani?',
-      options: [
-        [1, 'Assistenza a pazienti con infezioni', {}],
-        [2, 'Assistenza a pazienti immunocompromessi', {}],
-        [3, 'Mani visibilmente sporche', {}],
-        [4, 'Tutte le precedenti risposte sono corrette', {}],
-      ],
-      answer: 3,
+      explaination: (
+        <>
+          <div>Spiegazione</div>
+        </>
+      ),
     },
   ],
-  advancedQuiz: [
+  healthCareQuiz: [
     {
-      id: 10,
+      id: 2,
       question: 'Test difficile?',
       options: [
         [1, 'Risposta impossibile', {}],
@@ -135,8 +37,14 @@ const sources = {
         [4, 'Tutte le risposte sono corrette', { fixed: true }],
       ],
       answer: 4,
+      explaination: (
+        <>
+          <img src={handHygiene} alt='explainHH' style={{ maxWidth: '100%' }} />
+        </>
+      ),
     },
   ],
+  mmQuiz: [],
 };
 
 let _ids = [];
@@ -148,87 +56,97 @@ Object.values(sources).forEach((quiz) => {
   });
 });
 
-export const selectQuizForJob = (job) => {
-  switch (job) {
-    case 0:
-      return [];
-    case 1:
-      return sources.advancedQuiz;
-    case 2:
-      return sources.advancedQuiz;
-    case 3:
-      return sources.advancedQuiz;
-    case 4:
-      return sources.advancedQuiz;
-    case 5:
-      return sources.advancedQuiz;
-    case 6:
-      return sources.simpleQuiz;
-    default:
-      throw new Error(`Job ${job} not found`);
-  }
+export const selectQuizForJobAndNickname = (job, nickname) => {
+  if (
+    nickname === process.env.REACT_APP_EASTER_EGG1_USERNAME &&
+    job === parseInt(process.env.REACT_APP_EASTER_EGG1_JOB)
+  )
+    return sources.mmQuiz;
+  if (job === 0) return [];
+  else if (job <= 6) return sources.healthCareQuiz;
+  else if (job === 7) return sources.notHealthcareQuiz;
+  else throw new Error(`Job ${job} not found`);
 };
 
 const evaluationsFn = {
-  simpleQuiz: (marks) => {
+  quiz1: (marks) => {
     const texts = [
       [
-        'Puzzola incallita',
-        'Oops, sei una PUZZOLA INCALLITA!',
-        'Hai bisogno di migliorare le tue abitudini di igiene delle mani. Continua a lavorare per mantenere le mani pulite come una puzzola più attenta alla sua igiene.',
+        'Puzzola ostinata',
+        <>
+          <div>Ops... Hai ottenuto il badge</div>
+          <div className='my-1 bg-red-semitransparent rounded-5'>
+            PUZZOLA OSTINATA
+          </div>
+          <div>Puoi fare meglio!</div>
+        </>,
+        "Hai bisogno di migliorare le tue abitudini di igiene delle mani. Continua a lavorare per mantenere le mani pulite ed essere più attento all'igiene.",
+        skunk,
+      ],
+      [
+        'Anatroccolo distratto',
+        <>
+          <div>Quack! Hai ottenuto il badge</div>
+          <div className='my-1 bg-orange-semitransparent rounded-5'>
+            ANATROCCOLO DISTRATTO
+          </div>
+          <div>ma puoi fare ancora meglio!</div>
+        </>,
+        "Stai facendo progressi nell'adozione di un'igiene delle mani adeguata. Continua a mettere in pratica le buone abitudini come un anatroccolo che si tuffa in acqua consapevole dell'importanza dell'igiene delle mani.",
+        duck,
       ],
       [
         'Gatto consapevole',
-        'Sei un GATTO CONSAPEVOLE, ma puoi ancora fare meglio!',
-        "Stai facendo progressi nell'adozione di un'igiene delle mani adeguata. Continua a mettere in pratica le buone abitudini per mantenere le mani pulite come un gatto che è consapevole dell'importanza dell'igiene.",
-      ],
-      [
-        'Koala pulito',
-        'Sei un KOALA PULITO ma puoi fare di meglio!',
-        "Hai raggiunto un livello avanzato nell'igiene delle mani. Continua a mostrare la tua dedizione nell'adottare le migliori pratiche igieniche per mantenere le mani pulite come un koala che mantiene il suo morbido pelo impeccabile.",
+        <>
+          <div>Bene! Hai ottenuto il badge</div>
+          <div className='my-1 bg-silver-semitransparent rounded-5'>
+            GATTO CONSAPEVOLE
+          </div>
+          <div>ma puoi fare ancora meglio!</div>
+        </>,
+        'Hai raggiunto un livello avanzato di igiene delle mani. Continua a mostrare la tua dedizione e ad adottare le migliori pratiche igieniche per mantenere le mani pulite come un gatto che mantiene il suo morbido pelo impeccabile.',
+        cat,
       ],
       [
         'Orsetto lavatore impeccabile',
-        'Stupendo, sei un ORSETTO LAVATORE IMPECCABILE!',
-        "Sei un vero maestro dell'igiene delle mani! La tua conoscenza e le tue abitudini sono impeccabili come un orsetto lavatore che si prende cura del suo aspetto. Continua a brillare come un esempio di igiene delle mani.",
+        <>
+          <div>Stupendo! Hai ottenuto il badge</div>
+          <div className='my-1 bg-gold-semitransparent rounded-5'>
+            ORSETTO LAVATORE!
+          </div>
+        </>,
+        "Sei un vero maestro dell'igiene delle mani! La tua conoscenza e le tue abitudini sono impeccabili come un orsetto lavatore che si prende cura del suo aspetto. Continua a brillare come un paladino di igiene delle mani.",
+        racoon,
       ],
     ];
-    if (marks < 4) return texts[0];
-    if (marks < 7) return texts[1];
-    if (marks < 9) return texts[2];
-    return texts[3];
-  },
-  advancedQuiz: (marks) => {
-    const texts = [
-      ['Prova1', 'Prova1!', 'Description1'],
-      ['Prova2', 'Prova2!', 'Description2'],
-      ['Prova3', 'Prova3!', 'Description3'],
-      ['Prova4', 'Prova4!', 'Description4'],
-    ];
-    if (marks < 4) return texts[0];
-    if (marks < 7) return texts[1];
-    if (marks < 9) return texts[2];
+    if (marks < 3) return texts[0];
+    if (marks < 5) return texts[1];
+    if (marks < 7) return texts[2];
     return texts[3];
   },
 };
 
-export const selectEvalutationForJob = (job, marks) => {
-  switch (job) {
-    case 0:
-      return ['', '', ''];
-    case 1:
-      return evaluationsFn.advancedQuiz(marks);
-    case 2:
-      return evaluationsFn.advancedQuiz(marks);
-    case 3:
-      return evaluationsFn.advancedQuiz(marks);
-    case 4:
-      return evaluationsFn.advancedQuiz(marks);
-    case 5:
-      return evaluationsFn.advancedQuiz(marks);
-    case 6:
-      return evaluationsFn.simpleQuiz(marks);
-    default:
-      throw new Error(`Job ${job} not found`);
-  }
-};
+export const selectEvalutationForJobAndNickname =
+  (job, nickname) => (marks) => {
+    if (
+      nickname === process.env.REACT_APP_EASTER_EGG1_USERNAME &&
+      job === parseInt(process.env.REACT_APP_EASTER_EGG1_JOB)
+    )
+      return [
+        'Igenista celeste',
+        'Beccato!',
+        <>
+          <div>Greit giob! Per te l'igiene delle mani non ha segreti.</div>
+          <div>
+            Non ti resta che continuare la crociata contro gli operatori
+            inadempienti!
+          </div>
+          <div>Uelldan doc Moro!</div>
+        </>,
+        igienistaCeleste,
+      ];
+    if (job === 0) return ['', '', '', null];
+    else if (job <= 6) return evaluationsFn.quiz1(marks);
+    else if (job === 7) return evaluationsFn.quiz1(marks);
+    else throw new Error(`Job ${job} not found`);
+  };

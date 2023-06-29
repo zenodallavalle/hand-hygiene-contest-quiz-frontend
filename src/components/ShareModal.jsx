@@ -1,12 +1,10 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import { InlineIcon } from '@iconify/react';
 import checkIcon from '@iconify/icons-lucide/check';
 import AutoBlurButton from './AutoBlurButton';
-
-import { selectEvalutationForJob } from '../source';
 
 import {
   FacebookShareButton,
@@ -21,13 +19,9 @@ import {
   WhatsappIcon,
 } from 'react-share';
 
-const ShareModal = ({ show, onHide, marks, job }) => {
-  const [badge] = useMemo(
-    () => selectEvalutationForJob(job, marks),
-    [job, marks]
-  );
-  //   const url = window.location.href;
-  const url = 'https://www.google.com';
+const ShareModal = ({ show, onHide, evaluationTexts }) => {
+  const [badge] = evaluationTexts;
+  const url = process.env.REACT_APP_SHARE_URL || window.location.href;
   const [copied, setCopied] = useState(false);
   const title = `Ho ottenuto il badge di ${badge} al quiz di igiene delle mani. E tu?`;
   useEffect(() => {

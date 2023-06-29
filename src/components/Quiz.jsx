@@ -35,6 +35,7 @@ const Quiz = ({
   const {
     id: questionId,
     question,
+    explaination,
     options: unshuffledOptions,
     answer,
   } = questionIndex < quizs.length ? quizs[questionIndex] : {};
@@ -97,12 +98,15 @@ const Quiz = ({
   const opacityStyle = { opacity: isAnimating ? '25%' : '100%' };
 
   return (
-    <Container>
-      <div className='row vh-100 justify-content-center align-items-center'>
+    <Container className='container-padding-top'>
+      <div className='row justify-content-center pb-2'>
         <div className='col-lg-8'>
           <div
             className='card p-4 transition-bg'
-            style={{ ...backgroundColorStyle, borderColor: '#646464' }}
+            style={{
+              ...backgroundColorStyle,
+              borderColor: '#646464',
+            }}
           >
             <div className='d-flex justify-content-between'>
               <h5
@@ -138,14 +142,24 @@ const Quiz = ({
             </div>
 
             <AutoBlurButton
-              className='py-2 w-100 mt-3 text-light fw-bold'
+              style={opacityStyle}
+              className='py-2 w-100 mt-3 text-light fw-bold transition-opacity'
               onClick={onNextQuestion}
               disabled={isAnimating || !selectedAnswer}
             >
               {questionIndex + 1 < quizs.length
-                ? 'Next Question'
-                : 'Show Result'}
+                ? 'Prossima domanda'
+                : 'Vedi risultati'}
             </AutoBlurButton>
+
+            {!!selectedAnswer && explaination && (
+              <div
+                style={opacityStyle}
+                className='border mt-3 border-primary border-secondary border-1 rounded transition-opacity'
+              >
+                <div className='text-light p-1'>{explaination}</div>
+              </div>
+            )}
           </div>
         </div>
       </div>

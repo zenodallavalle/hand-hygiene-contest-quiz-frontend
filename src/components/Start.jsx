@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 
@@ -8,20 +8,25 @@ import { useCollectStart } from '../api';
 import capitalize from '../capitalize';
 
 const jobOptions = [
-  [1, 'Medico'],
-  [2, 'Professionista sanitario (inferiere, fisioterapista, ecc.)'],
+  [1, 'Medico/odontoiatra'],
+  [2, 'Professionista sanitario (infermiere, fisioterapista, ecc.)'],
   [3, 'Operatore socio-sanitario'],
   [4, 'Studente di medicina/odontoiatria'],
   [5, 'Studente di professioni sanitarie'],
-  [6, 'Nessuna delle precedenti'],
+  [6, 'Altra tipologia di operatore sanitario'],
 ];
+
+const notHealthcareWorkerValue = 7;
 
 // validators
 const validateNickname = (nickname) =>
   nickname.trim() && nickname.trim().length < 100;
 
 const validateJob = (job) =>
-  job && 1 <= job && job <= jobOptions[jobOptions.length - 1][0];
+  job &&
+  1 <= job &&
+  job <=
+    jobOptions[jobOptions.length - 1][0] + 1; /* +1 for notHealthcareWorkers */
 
 const Start = ({
   quizUID,
@@ -33,6 +38,13 @@ const Start = ({
   setMarks,
 }) => {
   const [clicked, setCliked] = useState(false);
+  const [isOperator, setIsOperator] = useState(undefined);
+
+  useEffect(() => {
+    if (isOperator === false) {
+      setJob(notHealthcareWorkerValue);
+    }
+  }, [isOperator, setJob]);
 
   const onStartQuiz = () => {
     if (!validateNickname(nickname) || !validateJob(job))
@@ -51,7 +63,7 @@ const Start = ({
   const { collectStart } = useCollectStart();
 
   return (
-    <Container>
+    <Container className='container-padding-top'>
       <div className='text-center row justify-content-center'>
         <div className='col-lg-10 p-2 rounded-5 bg-dark'>
           <h1 className='fw-bold mb-2'>Igiene delle mani</h1>
@@ -72,27 +84,61 @@ const Start = ({
           <div className='mb-3' />
 
           <div className='d-flex align-items-baseline'>
-            <div className='me-1 text-small'>Professione</div>
-            <Form.Select
-              value={job}
-              onChange={(e) =>
-                setJob(processIntegerOrThrowError(e.target.value))
-              }
-            >
-              <option value={0}>seleziona</option>
-              {jobOptions.map(([value, label]) => (
-                <option key={`job_${value}`} value={value}>
-                  {capitalize(label)}
-                </option>
-              ))}
-            </Form.Select>
+            <div className='text-small me-3'>
+              <div>
+                Sei un operatore sanitario o uno studente in ambito sanitario?
+              </div>
+            </div>
+
+            <Form.Check
+              inline
+              type='radio'
+              label='Sì'
+              checked={isOperator === true}
+              onChange={() => setIsOperator(true)}
+            />
+
+            <Form.Check
+              inline
+              type='radio'
+              label='No'
+              checked={isOperator === false}
+              onChange={() => setIsOperator(false)}
+            />
           </div>
-          {clicked && !validateJob(job) && (
-            <div className='mt-1 text-center text-small text-danger'>
-              Seleziona una professione per proseguire!
+          {clicked && isOperator === undefined && (
+            <div className='mt-1 text-start text-small text-danger'>
+              Seleziona una risposta per proseguire!
             </div>
           )}
           <div className='mb-3' />
+
+          {isOperator && (
+            <>
+              <div className='d-flex align-items-baseline'>
+                <div className='me-1 text-small'>Qualifica</div>
+                <Form.Select
+                  value={job}
+                  onChange={(e) =>
+                    setJob(processIntegerOrThrowError(e.target.value))
+                  }
+                >
+                  <option value={0}>seleziona</option>
+                  {jobOptions.map(([value, label]) => (
+                    <option key={`job_${value}`} value={value}>
+                      {capitalize(label)}
+                    </option>
+                  ))}
+                </Form.Select>
+              </div>
+              {clicked && !validateJob(job) && (
+                <div className='mt-1 text-center text-small text-danger'>
+                  Seleziona una professione per proseguire!
+                </div>
+              )}
+              <div className='mb-3' />
+            </>
+          )}
 
           <p className='fst-italic small'>
             Cliccando Inizia ora accetti che il tuo Nickname, il tuo indirizzo

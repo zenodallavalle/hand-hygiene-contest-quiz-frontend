@@ -177,7 +177,7 @@ export const calculateBacteriaPositionForCycle = (
             // correction will be NaN because in options there is only movePerCycle
             cycle,
             { ...bacterium, initialDirection: traslation },
-            { movePerCycle: translationMovePerCycleDuringDuplication * 1.41 } //because the move is diagonal
+            { movePerCycle: translationMovePerCycleDuringDuplication }
           );
           return {
             ...bacterium,

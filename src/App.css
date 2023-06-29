@@ -12,15 +12,19 @@ body {
   color: #212529;
 }
 
-.bg-success-semitransparent {
-  background-color: rgba(025, 135, 84, 0.7);
+.bg-gold-semitransparent {
+  background-color: rgba(236, 210, 89, 0.75);
 }
 
-.bg-warning-semitransparent {
+.bg-orange-semitransparent {
   background-color: rgba(255, 153, 0, 0.7);
 }
 
-.bg-danger-semitransparent {
+.bg-silver-semitransparent {
+  background-color: rgba(101, 183, 201, 0.7);
+}
+
+.bg-red-semitransparent {
   background-color: rgba(220, 53, 69, 0.7);
 }
 
@@ -30,4 +34,8 @@ body {
 
 .transition-opacity {
   transition: opacity 400ms ease-in-out;
+}
+
+.container-padding-top {
+  padding-top: 3rem;
 }

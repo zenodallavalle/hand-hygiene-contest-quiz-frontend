@@ -98,8 +98,8 @@ _bacteriaOptions.duplicationDurationCycles =
 
 _bacteriaOptions.translationMovePerCycleDuringDuplication = round(
   _bacteriaOptions.baseDimension /
-    2 /
-    _bacteriaOptions.duplicationDurationCycles, // I added /2 supposing both parent and child move
+    2 / // I added /2 supposing both parent and child move
+    _bacteriaOptions.duplicationDurationCycles,
   2
 );
 

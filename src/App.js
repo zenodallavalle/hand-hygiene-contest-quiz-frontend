@@ -12,7 +12,10 @@ import Start from './components/Start';
 import Quiz from './components/Quiz';
 import Result from './components/Result';
 
-import { selectQuizForJob } from './source';
+import {
+  selectQuizForJobAndNickname,
+  selectEvalutationForJobAndNickname,
+} from './source';
 import {
   calculateBacteriaPositionForCycle,
   generateBacteria,
@@ -25,8 +28,6 @@ import AutoBlurButton from './components/AutoBlurButton';
 
 // Audio assets
 import finished from './assets/sounds/finished.mp3';
-// import flameThrower from './assets/sounds/flameThrower.mp3';
-// import poppin from './assets/sounds/poppin.mp3';
 import laserGun from './assets/sounds/laserGun.mp3';
 import insectNoise from './assets/sounds/insectNoise.mp3';
 
@@ -140,7 +141,16 @@ function App() {
   };
 
   // quiz
-  const quizs = useMemo(() => selectQuizForJob(job), [job]);
+  const quizs = useMemo(
+    () => selectQuizForJobAndNickname(job, nickname),
+    [job, nickname]
+  );
+
+  // evaluation
+  const evaluationTexts = useMemo(
+    () => selectEvalutationForJobAndNickname(job, nickname)(marks),
+    [job, nickname, marks]
+  );
 
   return (
     <div>
@@ -180,9 +190,11 @@ function App() {
           </div>
 
           <div
-            className='text-center justify-content-center d-flex h-100 align-items-center'
+            className='text-center justify-content-center d-flex w-100 h-100'
             style={{
               position: 'absolute',
+              top: 0,
+              left: 0,
               overflowY: 'auto',
             }}
           >
@@ -208,15 +220,15 @@ function App() {
                 setMarks={setMarks}
                 onWrongAnswer={onWrongAnswer}
                 onRightAnswer={onRightAnswer}
-                onFinished={onFinished}
                 bacteriaOptions={bacteriaOptions}
                 quizs={quizs}
+                onFinished={onFinished}
               />
             ) : (
               <Result
                 marks={marks}
                 quizs={quizs}
-                job={job}
+                evaluationTexts={evaluationTexts}
                 onStartOver={onStartOver}
                 onShare={() => setShowShareModal(true)}
               />
@@ -226,8 +238,7 @@ function App() {
         <ShareModal
           show={showShareModal}
           onHide={() => setShowShareModal(false)}
-          marks={marks}
-          job={job}
+          evaluationTexts={evaluationTexts}
         />
       </GoogleReCaptchaProvider>
     </div>
