@@ -439,7 +439,7 @@ Object.values(sources).forEach((quiz) => {
 
 export const selectQuizForJobAndNickname = (job, nickname) => {
   if (
-    nickname === process.env.REACT_APP_EASTER_EGG1_USERNAME &&
+    nickname.toLowerCase() === process.env.REACT_APP_EASTER_EGG1_USERNAME &&
     job === parseInt(process.env.REACT_APP_EASTER_EGG1_JOB)
   )
     return sources.mmQuiz;
@@ -510,7 +510,7 @@ const evaluationsFn = {
 export const selectEvalutationForJobAndNickname =
   (job, nickname) => (marks) => {
     if (
-      nickname === process.env.REACT_APP_EASTER_EGG1_USERNAME &&
+      nickname.toLowerCase() === process.env.REACT_APP_EASTER_EGG1_USERNAME &&
       job === parseInt(process.env.REACT_APP_EASTER_EGG1_JOB)
     )
       return [
