@@ -117,7 +117,7 @@ const Quiz = ({
                   textAlign: 'right',
                 }}
               >
-                {questionIndex} / {quizs.length}
+                {questionIndex + 1} / {quizs.length}
               </h5>
             </div>
             <h5
@@ -155,9 +155,9 @@ const Quiz = ({
             {!!selectedAnswer && explaination && (
               <div
                 style={opacityStyle}
-                className='border mt-3 border-primary border-secondary border-1 rounded transition-opacity'
+                className='bg-success border mt-3 border-primary border-success  border-1 rounded transition-opacity'
               >
-                <div className='text-light p-1'>{explaination}</div>
+                <div className='text-light text-start p-1'>{explaination}</div>
               </div>
             )}
           </div>

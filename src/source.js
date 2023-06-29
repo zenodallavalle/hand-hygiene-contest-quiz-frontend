@@ -305,7 +305,12 @@ const sources = {
             <img
               src={handHygiene}
               alt='Hand Hygiene'
-              style={{ width: '100%' }}
+              className='mx-auto pb-1 rounded'
+              style={{
+                width: '100%',
+                maxWidth: '300px',
+                display: 'block',
+              }}
             />
             Le fasi per una corretta tecnica di lavaggio sono 6, e cioè:
             <ol>
