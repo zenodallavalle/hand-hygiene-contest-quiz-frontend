@@ -163,10 +163,12 @@ function App() {
 
   useEffect(() => {
     const url = new URL(window.location.href);
+    const referrer = url.searchParams.get('r');
     url.searchParams.delete('r');
-    window.history.replaceState({}, '', url.toString());
-    alert(`${!!window.history.replaceState}${window.location.href}`);
-  }, []);
+    if (referrer) {
+      window.history.replaceState({}, '', url.toString());
+    }
+  });
 
   return (
     <div>
@@ -191,6 +193,8 @@ function App() {
           </div>
 
           <div style={{ position: 'absolute', zIndex: 1000, left: 0, top: 0 }}>
+            <div>Referrer is {referrer}</div>
+
             <AutoBlurButton
               style={{ zIndex: 100 }}
               size='lg'
