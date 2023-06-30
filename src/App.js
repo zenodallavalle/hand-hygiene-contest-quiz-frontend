@@ -157,7 +157,7 @@ function App() {
   const [startId, setStartId] = useState(null);
 
   const referrer = useMemo(() => {
-    const referrer = window.location.hash;
+    const referrer = window.location.hash.replace('#', '');
     window.location.hash = '';
     return referrer;
   }, []);
