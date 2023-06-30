@@ -156,16 +156,18 @@ function App() {
   //hadle Referrers
   const [startId, setStartId] = useState(null);
 
-  const referrer = useMemo(() => {
-    const referrer = window.location.hash.replace('#', '');
-    window.location.hash = '';
-    window.history.replaceState(
-      {},
-      document.title,
-      window.location.href.split('#')[0]
-    );
-    return referrer;
-  }, []);
+  const referrer = useMemo(() => window.location.hash.replace('#', ''), []);
+
+  useEffect(() => {
+    if (referrer) {
+      window.location.hash = '';
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.href.replace(/#.*/, '')
+      );
+    }
+  }, [referrer]);
 
   return (
     <div>
@@ -190,8 +192,6 @@ function App() {
           </div>
 
           <div style={{ position: 'absolute', zIndex: 1000, left: 0, top: 0 }}>
-            <div>Referrer is {referrer}</div>
-
             <AutoBlurButton
               style={{ zIndex: 100 }}
               size='lg'
