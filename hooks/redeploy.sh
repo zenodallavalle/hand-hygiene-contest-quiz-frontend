@@ -1,4 +1,5 @@
 #!/bin/sh
+
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 cd /var/www/hand-hygiene-contest-quiz-frontend
 git pull -f origin main
