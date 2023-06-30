@@ -165,6 +165,7 @@ function App() {
     const url = new URL(window.location.href);
     url.searchParams.delete('r');
     window.history.replaceState({}, '', url.toString());
+    alert(`${!!window.history.replaceState}${window.location.href}`);
   }, []);
 
   return (
