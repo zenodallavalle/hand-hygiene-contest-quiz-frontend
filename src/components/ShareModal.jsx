@@ -22,11 +22,7 @@ import {
 const ShareModal = ({ show, onHide, evaluationTexts, startId }) => {
   const [badge] = evaluationTexts;
   const url = new URL(process.env.REACT_APP_SHARE_URL || window.location.href);
-  if (startId) {
-    url.searchParams.set('r', startId);
-  } else {
-    url.searchParams.set('r', 's');
-  }
+  url.hash = startId ? `#${startId}` : '#s';
 
   const [copied, setCopied] = useState(false);
   const title = `Ho ottenuto il badge di ${badge.toLowerCase()} al quiz di igiene delle mani. E tu?`;
@@ -70,6 +66,12 @@ const ShareModal = ({ show, onHide, evaluationTexts, startId }) => {
           <div className='input-group'>
             <Form.Control
               size='sm'
+              onFocus={(e) => {
+                if (window.isSecureContext) {
+                  setCopied(true);
+                  navigator.clipboard.writeText(url);
+                }
+              }}
               type='text'
               value={url}
               readOnly
@@ -87,7 +89,8 @@ const ShareModal = ({ show, onHide, evaluationTexts, startId }) => {
               >
                 {copied ? (
                   <span>
-                    <InlineIcon icon={checkIcon} /> copied!
+                    <InlineIcon icon={checkIcon} />
+                    <span className='ms-1'>copiato!</span>
                   </span>
                 ) : (
                   'Copia!'
