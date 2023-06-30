@@ -2,8 +2,8 @@
 
 cd /var/www/hand-hygiene-contest-quiz-frontend
 git pull -f origin main
-npm install
-npm run build
+yarn
+yarn build
 rm -rf build
 mv ./building ./build
 sudo service apache2 restart

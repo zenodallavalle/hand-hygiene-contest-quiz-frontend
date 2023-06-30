@@ -205,6 +205,10 @@ const Credits = ({ view = 'start', ...props }) => {
               </div>
             </div>
           </div>
+          <div>
+            {process.env.REACT_APP_NAME} versione{' '}
+            <i>{process.env.REACT_APP_VERSION}</i>
+          </div>
         </Modal.Body>
       </Modal>
     </div>
