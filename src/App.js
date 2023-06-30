@@ -33,6 +33,7 @@ import insectNoise from './assets/sounds/insectNoise.mp3';
 
 import { bacteriaOptions } from './bacteriaOptions';
 import ShareModal from './components/ShareModal';
+import Credits from './components/Credits';
 
 const initialSetOfBacteria = generateBacteria(bacteriaOptions);
 
@@ -259,6 +260,15 @@ function App() {
           onHide={() => setShowShareModal(false)}
           evaluationTexts={evaluationTexts}
           startId={startId}
+        />
+        <Credits
+          view={
+            questionIndex === -1
+              ? 'start'
+              : questionIndex < quizs.length
+              ? 'quiz'
+              : 'result'
+          }
         />
       </GoogleReCaptchaProvider>
     </div>

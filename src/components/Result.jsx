@@ -73,6 +73,7 @@ const Result = ({ marks, onStartOver, quizs, evaluationTexts, onShare }) => {
               Ritenta
             </AutoBlurButton>
           </div>
+          <div className='mb-3 mt-1' style={{ height: 90 }} />
         </div>
       </div>
     </Container>

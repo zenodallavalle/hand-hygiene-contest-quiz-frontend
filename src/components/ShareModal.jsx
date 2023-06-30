@@ -45,7 +45,7 @@ const ShareModal = ({ show, onHide, evaluationTexts, startId }) => {
             <WhatsappShareButton
               url={url}
               title={title}
-              separator={decodeURI('%0a')}
+              separator={decodeURI('%0a%0a')}
             >
               <WhatsappIcon size={32} round />
             </WhatsappShareButton>

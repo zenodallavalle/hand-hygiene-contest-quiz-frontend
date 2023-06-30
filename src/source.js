@@ -138,7 +138,11 @@ const sources = {
           'Non esistono batteri sulle mani, altrimenti contamineremmo ogni cosa che tocchiamo',
           {},
         ],
-        [2, 'Falso', {}],
+        [
+          2,
+          'Quella “residente” (cioè stabilmente presente) è la principale responsabile della trasmissione delle infezioni',
+          {},
+        ],
         [
           3,
           'Quella “transitoria” (cioè acquisita temporaneamente) è la principale responsabile della trasmissione delle infezioni',
@@ -291,7 +295,7 @@ const sources = {
     {
       id: 12,
       question:
-        'Da quante “fasi” è composta la tecnica di igiene delle mani proposta dall’OMS?',
+        'Operativamente da quanti "step" (o fasi) è composta la tecnica di igiene delle mani proposta dall’OMS?',
       options: [
         [1, 'Quattro', {}],
         [2, 'Cinque', {}],
@@ -368,7 +372,7 @@ const sources = {
     {
       id: 14,
       question:
-        'Quale dei seguenti NON è uno dei cinque momenti dell’igiene delle mani?',
+        'Quale dei seguenti NON è uno dei cinque momenti (indicazioni) dell’igiene delle mani?',
       options: [
         [1, 'Prima del contatto con il paziente', {}],
         [2, 'Prima del contatto con l’ambiente circostante il paziente', {}],
