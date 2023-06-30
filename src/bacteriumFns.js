@@ -168,11 +168,8 @@ export const calculateBacteriaPositionForCycle = (
           });
           return { ...bacterium };
         } else if (cycle < duplicatedOn) {
-          // use duplicatedOn to calculate clockwise so that will be consistent during the whole duplication
-          clockwise = round(cycle / clockwiseChangePeriod, 0) % 2 === 0;
           // The actual duplication
-          const traslation =
-            direction + (clockwise ? 90 : -90) + (bacterium.isCopy ? 180 : 0);
+          const traslation = direction + 90 + (bacterium.isCopy ? 180 : 0);
           const { deltaX, deltaY } = calculateNewPosition(
             // correction will be NaN because in options there is only movePerCycle
             cycle,
