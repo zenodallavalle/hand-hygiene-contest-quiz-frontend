@@ -107,7 +107,7 @@ const Credits = ({ view = 'start', ...props }) => {
                 {window.innerWidth < 320 && <br />}
                 <span className='me-1'>A. Antonelli,</span>
                 {window.innerWidth >= 320 && window.innerWidth < 530 && <br />}
-                <span className='me-1'>S. Borlini, Z. Dalla Valle</span>
+                <span className='me-1'>S. Borlini, Z. Dalla Valle,</span>
                 {window.innerWidth < 320 && <br />}
                 <span className='me-1'>M. Moro</span>
               </>
