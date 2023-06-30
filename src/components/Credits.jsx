@@ -59,7 +59,6 @@ const people = [
     },
     image: SB,
   },
-
   {
     name: 'Zeno Dalla Valle',
     roles: [ideator, graphic, programmer],
@@ -104,9 +103,9 @@ const Credits = ({ view = 'start', ...props }) => {
               <span className='me-1'>Crediti</span>
             ) : (
               <>
-                <span className='me-1'>Un'idea di: A. Antonelli</span>
+                <span className='me-1'>Un'idea di: M.E. Ales,</span>
                 {window.innerWidth < 320 && <br />}
-                <span className='me-1'>M.E. Ales,</span>
+                <span className='me-1'>A. Antonelli,</span>
                 {window.innerWidth >= 320 && window.innerWidth < 530 && <br />}
                 <span className='me-1'>S. Borlini, Z. Dalla Valle</span>
                 {window.innerWidth < 320 && <br />}
