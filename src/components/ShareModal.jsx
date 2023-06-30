@@ -19,11 +19,17 @@ import {
   WhatsappIcon,
 } from 'react-share';
 
-const ShareModal = ({ show, onHide, evaluationTexts }) => {
+const ShareModal = ({ show, onHide, evaluationTexts, startId }) => {
   const [badge] = evaluationTexts;
-  const url = process.env.REACT_APP_SHARE_URL || window.location.href;
+  const url = new URL(process.env.REACT_APP_SHARE_URL || window.location.href);
+  if (startId) {
+    url.searchParams.set('r', startId);
+  } else {
+    url.searchParams.set('r', 's');
+  }
+
   const [copied, setCopied] = useState(false);
-  const title = `Ho ottenuto il badge di ${badge} al quiz di igiene delle mani. E tu?`;
+  const title = `Ho ottenuto il badge di ${badge.toLowerCase()} al quiz di igiene delle mani. E tu?`;
   useEffect(() => {
     setCopied(false);
   }, [show]);

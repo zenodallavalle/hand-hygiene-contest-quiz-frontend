@@ -152,6 +152,23 @@ function App() {
     [job, nickname, marks]
   );
 
+  //hadle Referrers
+  const [startId, setStartId] = useState(null);
+
+  const referrer = useMemo(
+    () => new URL(window.location.href).searchParams.get('r') || null,
+    []
+  );
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const referrer = url.searchParams.get('r');
+    if (referrer) {
+      url.searchParams.delete('r');
+      window.history.replaceState({}, '', url.toString());
+    }
+  });
+
   return (
     <div>
       <GoogleReCaptchaProvider
@@ -207,6 +224,8 @@ function App() {
                 setJob={setJob}
                 setQuestionIndex={setQuestionIndex}
                 setMarks={setMarks}
+                setStartId={setStartId}
+                referrer={referrer}
               />
             ) : questionIndex < quizs.length ? (
               <Quiz
@@ -239,6 +258,7 @@ function App() {
           show={showShareModal}
           onHide={() => setShowShareModal(false)}
           evaluationTexts={evaluationTexts}
+          startId={startId}
         />
       </GoogleReCaptchaProvider>
     </div>

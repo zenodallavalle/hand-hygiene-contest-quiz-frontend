@@ -36,6 +36,8 @@ const Start = ({
   setJob,
   setQuestionIndex,
   setMarks,
+  setStartId,
+  referrer,
 }) => {
   const [clicked, setCliked] = useState(false);
   const [isOperator, setIsOperator] = useState(undefined);
@@ -46,12 +48,16 @@ const Start = ({
     }
   }, [isOperator, setJob]);
 
-  const onStartQuiz = () => {
+  const onStartQuiz = async () => {
     if (!validateNickname(nickname) || !validateJob(job))
       return setCliked(true);
-    collectStart(quizUID, nickname.trim(), job);
+
     setQuestionIndex(0);
     setMarks(0);
+
+    const id = await collectStart(quizUID, nickname.trim(), job, referrer);
+
+    if (id) setStartId(id);
   };
 
   const processIntegerOrThrowError = (s) => {

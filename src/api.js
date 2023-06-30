@@ -23,12 +23,12 @@ export const useCollectStart = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const returnFn = useCallback(
-    async (quizUID, nickname, job) => {
+    async (quizUID, nickname, job, referrer) => {
       if (!executeRecaptcha) return;
       try {
         const recaptchaToken = await executeRecaptcha('collectStart');
         const url = new URL('start_event/', process.env.REACT_APP_API_URL);
-        await fetch(url, {
+        const r = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -42,8 +42,13 @@ export const useCollectStart = () => {
             recaptcha_token: recaptchaToken,
             nickname,
             job,
+            referrer,
           }),
         });
+        const response = await r.json();
+        if (r.ok) {
+          return response.id;
+        }
       } catch (error) {
         console.error('Error in useCollectStart: ', error);
       }
