@@ -28,6 +28,7 @@ export const useCollectStart = () => {
       try {
         const recaptchaToken = await executeRecaptcha('collectStart');
         const url = new URL('start_event/', process.env.REACT_APP_API_URL);
+        const _referrer = referrer || null;
         const r = await fetch(url, {
           method: 'POST',
           headers: {
@@ -42,7 +43,7 @@ export const useCollectStart = () => {
             recaptcha_token: recaptchaToken,
             nickname,
             job,
-            referrer,
+            referrer: _referrer,
           }),
         });
         const response = await r.json();

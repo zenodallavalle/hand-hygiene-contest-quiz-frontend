@@ -156,7 +156,10 @@ function App() {
   //hadle Referrers
   const [startId, setStartId] = useState(null);
 
-  const referrer = useMemo(() => window.location.hash.replace('#', ''), []);
+  const referrer = useMemo(
+    () => window.location.hash.replace('#', '') || null,
+    []
+  );
 
   useEffect(() => {
     if (referrer) {
