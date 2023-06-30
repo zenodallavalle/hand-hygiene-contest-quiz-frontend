@@ -147,9 +147,14 @@ const Start = ({
           )}
 
           <p className='fst-italic small'>
-            Cliccando Inizia ora accetti che il tuo Nickname, il tuo indirizzo
-            IP, la tua professione e le risposte date vengano salvate sul nostro
-            server per indagini statistiche anonime sull'igiene delle mani.
+            Partecipando a questo quiz, autorizzi la raccolta dei tuoi dati
+            (nickname, indirizzo IP, professione e le risposte) che saranno
+            salvati sul nostro server. I dati raccolti saranno utilizzati
+            esclusivamente in forma anonima e aggregata a fini epidemiologici e
+            di ricerca sull’igiene delle mani. Altri usi al di fuori di questi
+            non saranno consentiti. Tutte le informazioni personali
+            identificabili saranno rigorosamente protette e trattate
+            conformemente alle leggi sulla privacy vigenti.
           </p>
           <AutoBlurButton
             onClick={!nickname.trim() ? () => setCliked(true) : onStartQuiz}
