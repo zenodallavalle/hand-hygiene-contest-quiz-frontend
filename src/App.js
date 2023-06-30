@@ -159,7 +159,7 @@ function App() {
   const referrer = useMemo(() => {
     const referrer = window.location.hash.replace('#', '');
     window.location.hash = '';
-    history.replaceState(
+    window.history.replaceState(
       {},
       document.title,
       window.location.href.split('#')[0]
