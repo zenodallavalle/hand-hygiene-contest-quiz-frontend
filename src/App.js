@@ -192,7 +192,7 @@ function App() {
               ))}
           </div>
 
-          <div style={{ position: 'absolute', zIndex: 100, left: 0, top: 0 }}>
+          <div style={{ position: 'absolute', zIndex: 1000, left: 0, top: 0 }}>
             <AutoBlurButton
               style={{ zIndex: 100 }}
               size='lg'

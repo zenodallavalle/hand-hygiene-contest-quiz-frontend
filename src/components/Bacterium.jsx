@@ -23,7 +23,7 @@ const Bacterium = ({ cycle, bacterium, options = {}, ...props }) => {
           maxWidth: `${bacterium?.dimension}%`,
           maxHeight: `${bacterium?.dimension}%`,
           overflow: 'hidden',
-          zIndex: explodedOn || duplicatedOn ? 100 : undefined,
+          zIndex: explodedOn || duplicatedOn ? 100 : 0,
         }}
         className=' w-100 h-100'
       />

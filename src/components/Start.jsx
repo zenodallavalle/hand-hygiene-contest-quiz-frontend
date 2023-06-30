@@ -71,10 +71,11 @@ const Start = ({
   return (
     <Container className='container-padding-top'>
       <div className='text-center row justify-content-center'>
-        <div className='col-lg-10 p-2 rounded-5 bg-dark'>
+        <div className='col-lg-11 p-2 rounded-5 bg-dark'>
           <h1 className='fw-bold mb-2'>Igiene delle mani</h1>
-          <h5 className='fw-bold mb-4'>Ottieni ora il tuo avatar!</h5>
+          <h5 className='fw-bold mb-4'>Ottieni ora il tuo badge animale!</h5>
           <Form.Control
+            size='sm'
             nickname={nickname}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
@@ -82,23 +83,25 @@ const Start = ({
             placeholder='Nickname'
           />
           {clicked && !validateNickname(nickname) && (
-            <div className='mt-1 text-center text-danger text-small'>
-              Inserisci un nickname valido (1-99 caratteri)!
-            </div>
+            <small>
+              <div className='mt-1 text-center text-danger text-small'>
+                Inserisci un nickname valido (1-99 caratteri)!
+              </div>
+            </small>
           )}
+          <div className='mb-1' />
 
-          <div className='mb-3' />
-
-          <div className='d-flex align-items-baseline'>
-            <div className='text-small me-3'>
-              <div>
+          <div className='d-flex align-items-center'>
+            <small>
+              <div className='text-small text-start me-3'>
                 Sei un operatore sanitario o uno studente in ambito sanitario?
               </div>
-            </div>
+            </small>
 
             <Form.Check
               inline
               type='radio'
+              className='me-1'
               label='Sì'
               checked={isOperator === true}
               onChange={() => setIsOperator(true)}
@@ -106,6 +109,7 @@ const Start = ({
 
             <Form.Check
               inline
+              className='me-1'
               type='radio'
               label='No'
               checked={isOperator === false}
@@ -113,17 +117,20 @@ const Start = ({
             />
           </div>
           {clicked && isOperator === undefined && (
-            <div className='mt-1 text-start text-small text-danger'>
-              Seleziona una risposta per proseguire!
-            </div>
+            <small>
+              <div className='mt-1 text-start text-danger text-small'>
+                Seleziona una risposta per proseguire!
+              </div>
+            </small>
           )}
-          <div className='mb-3' />
+          <div className='mb-1' />
 
           {isOperator && (
             <>
               <div className='d-flex align-items-baseline'>
                 <div className='me-1 text-small'>Qualifica</div>
                 <Form.Select
+                  size='sm'
                   value={job}
                   onChange={(e) =>
                     setJob(processIntegerOrThrowError(e.target.value))
@@ -138,33 +145,38 @@ const Start = ({
                 </Form.Select>
               </div>
               {clicked && !validateJob(job) && (
-                <div className='mt-1 text-center text-small text-danger'>
-                  Seleziona una professione per proseguire!
-                </div>
+                <small>
+                  <div className='mt-1 text-center text-small text-danger'>
+                    Seleziona una professione per proseguire!
+                  </div>
+                </small>
               )}
-              <div className='mb-3' />
+              <div className='mb-2' />
             </>
           )}
 
-          <p className='fst-italic small'>
-            Partecipando a questo quiz, autorizzi la raccolta dei tuoi dati
-            (nickname, indirizzo IP, professione e le risposte) che saranno
-            salvati sul nostro server. I dati raccolti saranno utilizzati
-            esclusivamente in forma anonima e aggregata a fini epidemiologici e
-            di ricerca sull’igiene delle mani. Altri usi al di fuori di questi
-            non saranno consentiti. Tutte le informazioni personali
-            identificabili saranno rigorosamente protette e trattate
-            conformemente alle leggi sulla privacy vigenti.
-          </p>
+          <small>
+            <p className='fst-italic small mt-0 pt-0'>
+              Partecipando a questo quiz, autorizzi la raccolta dei tuoi dati
+              (nickname, indirizzo IP, professione e le risposte) che saranno
+              salvati sul nostro server. I dati raccolti saranno utilizzati
+              esclusivamente in forma anonima e aggregata a fini epidemiologici
+              e di ricerca sull’igiene delle mani. Altri usi al di fuori di
+              questi non saranno consentiti. Tutte le informazioni personali
+              identificabili saranno rigorosamente protette e trattate
+              conformemente alle leggi sulla privacy vigenti.
+            </p>
+          </small>
           <AutoBlurButton
             onClick={!nickname.trim() ? () => setCliked(true) : onStartQuiz}
             variant='light'
-            className='px-4 py-2 text-dark fw-bold'
+            className='px-4 py-2 text-dark fw-bold border-dark'
           >
             Inizia ora
           </AutoBlurButton>
         </div>
       </div>
+      <div className='mb-3 mt-1' style={{ height: 90 }} />
     </Container>
   );
 };
