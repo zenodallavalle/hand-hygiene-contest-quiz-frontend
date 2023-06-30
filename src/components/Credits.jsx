@@ -113,6 +113,8 @@ const Credits = ({ view = 'start', ...props }) => {
               </>
             )}
             <InlineIcon icon={creativeCommons} />
+            <br />
+            <span>Clicca qui per ulteriori informazioni</span>
           </small>
         </AutoBlurButton>
       </div>
