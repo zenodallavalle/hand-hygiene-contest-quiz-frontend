@@ -156,21 +156,29 @@ function App() {
   //hadle Referrers
   const [startId, setStartId] = useState(null);
 
-  const referrer = useMemo(
+  const referrerFromFragment = useMemo(
     () => window.location.hash.replace('#', '') || null,
+    []
+  );
+  const referrerFromParams = useMemo(
+    () => new URLSearchParams(window.location.search).get('r'),
     []
   );
 
   useEffect(() => {
-    if (referrer) {
+    const newURL = new URL(window.location.href.replace(/#.*/, ''));
+    if (referrerFromFragment) {
       window.location.hash = '';
-      window.history.replaceState(
-        {},
-        document.title,
-        window.location.href.replace(/#.*/, '')
-      );
     }
-  }, [referrer]);
+    if (referrerFromParams) {
+      newURL.searchParams.delete('r');
+    }
+    if (referrerFromFragment || referrerFromParams) {
+      window.history.replaceState({}, document.title, newURL.toString());
+    }
+  }, [referrerFromFragment, referrerFromParams]);
+
+  const referrer = referrerFromFragment || referrerFromParams;
 
   return (
     <div>
