@@ -163,12 +163,9 @@ function App() {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    const referrer = url.searchParams.get('r');
-    if (referrer) {
-      url.searchParams.delete('r');
-      window.history.replaceState({}, '', url.toString());
-    }
-  });
+    url.searchParams.delete('r');
+    window.history.replaceState({}, '', url.toString());
+  }, []);
 
   return (
     <div>
