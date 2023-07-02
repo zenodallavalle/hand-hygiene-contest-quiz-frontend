@@ -161,7 +161,6 @@ const Quiz = ({
               </div>
             )}
           </div>
-          <div className='mb-3 mt-1' style={{ height: 70 }} />
         </div>
       </div>
     </Container>

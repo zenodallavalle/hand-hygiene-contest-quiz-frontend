@@ -176,7 +176,6 @@ const Start = ({
           </AutoBlurButton>
         </div>
       </div>
-      <div className='mb-3 mt-1' style={{ height: 90 }} />
     </Container>
   );
 };

@@ -218,12 +218,14 @@ function App() {
           </div>
 
           <div
-            className='text-center justify-content-center d-flex w-100 h-100'
+            className='text-center justify-content-center d-flex w-100'
             style={{
               position: 'absolute',
               top: 0,
               left: 0,
+              bottom: 108,
               overflowY: 'auto',
+              zIndex: 2,
             }}
           >
             {questionIndex === -1 ? (

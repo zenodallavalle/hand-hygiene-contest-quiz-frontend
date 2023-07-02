@@ -88,7 +88,7 @@ const Credits = ({ view = 'start', ...props }) => {
           position: 'absolute',
           bottom: 0,
           left: 0,
-          zIndex: 0,
+          zIndex: view === 'quiz' ? 1 : 1000,
         }}
         className='px-2 pb-3'
       >
@@ -99,7 +99,7 @@ const Credits = ({ view = 'start', ...props }) => {
           className='text-start px-1'
         >
           <small>
-            {view === 'quiz' || window.innerWidth < 300 ? (
+            {window.innerWidth < 300 ? (
               <span className='me-1'>Crediti</span>
             ) : (
               <>
