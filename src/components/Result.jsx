@@ -32,9 +32,9 @@ const Result = ({ marks, onStartOver, quizs, evaluationTexts, onShare }) => {
               src={imgSrc}
               alt='badge'
               className='img-fluid rounded-3'
-              width='50%'
+              width='80%'
               style={{
-                maxWidth: 350,
+                maxWidth: 280,
                 display: loading ? 'none' : 'block',
               }}
               onLoad={() => setLoading(false)}

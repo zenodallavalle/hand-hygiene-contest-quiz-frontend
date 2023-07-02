@@ -180,6 +180,15 @@ function App() {
 
   const referrer = referrerFromFragment || referrerFromParams;
 
+  // view
+
+  const view =
+    questionIndex === -1
+      ? 'start'
+      : questionIndex < quizs.length
+      ? 'quiz'
+      : 'result';
+
   return (
     <div>
       <GoogleReCaptchaProvider
@@ -223,12 +232,12 @@ function App() {
               position: 'absolute',
               top: 0,
               left: 0,
-              bottom: 108,
+              bottom: view === 'quiz' ? 74 : 108,
               overflowY: 'auto',
               zIndex: 2,
             }}
           >
-            {questionIndex === -1 ? (
+            {view === 'start' ? (
               <Start
                 quizUID={quizUID}
                 nickname={nickname}
@@ -240,7 +249,7 @@ function App() {
                 setStartId={setStartId}
                 referrer={referrer}
               />
-            ) : questionIndex < quizs.length ? (
+            ) : view === 'quiz' ? (
               <Quiz
                 quizUID={quizUID}
                 job={job}
@@ -273,15 +282,7 @@ function App() {
           evaluationTexts={evaluationTexts}
           startId={startId}
         />
-        <Credits
-          view={
-            questionIndex === -1
-              ? 'start'
-              : questionIndex < quizs.length
-              ? 'quiz'
-              : 'result'
-          }
-        />
+        <Credits view={view} />
       </GoogleReCaptchaProvider>
     </div>
   );
