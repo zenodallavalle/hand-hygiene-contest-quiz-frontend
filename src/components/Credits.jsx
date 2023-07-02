@@ -99,7 +99,7 @@ const Credits = ({ view = 'start', ...props }) => {
           className='text-start px-1'
         >
           <small>
-            {window.innerWidth < 300 ? (
+            {view === 'quiz' || window.innerWidth < 300 ? (
               <span className='me-1'>Crediti</span>
             ) : (
               <>
