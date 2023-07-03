@@ -16,7 +16,7 @@ import ZDV from '../assets/img/150px_linkedInZDV.jpg';
 import SB from '../assets/img/150px_linkedInSB.jpg';
 
 const ideator = {
-  badge: 'primary',
+  badge: 'info',
   text: 'Ideazione',
 };
 
@@ -26,7 +26,7 @@ const graphic = {
 };
 
 const programmer = {
-  badge: 'info',
+  badge: 'primary',
   text: 'Programmazione',
 };
 
@@ -116,7 +116,9 @@ const Credits = ({ view = 'start', ...props }) => {
             {view !== 'quiz' && (
               <>
                 <br />
-                <span>Clicca qui per ulteriori informazioni</span>
+                <span>
+                  <b>Clicca qui per ulteriori informazioni</b>
+                </span>
               </>
             )}
           </small>
