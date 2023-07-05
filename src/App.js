@@ -34,12 +34,14 @@ import insectNoise from './assets/sounds/insectNoise.mp3';
 import { bacteriaOptions } from './bacteriaOptions';
 import ShareModal from './components/ShareModal';
 import Credits from './components/Credits';
+import Poster from './components/Poster';
 
 const initialSetOfBacteria = generateBacteria(bacteriaOptions);
 
 // App Fn
 function App() {
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showPoster, setShowPoster] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(-1);
   const [marks, setMarks] = useState(0);
   const [quizUID, setQuizUID] = useState(uuidv4());
@@ -47,6 +49,13 @@ function App() {
     localStorage.getItem('nickname') || ''
   );
   const [job, setJob] = useState(0);
+
+  const onShowPoster = () => {
+    setShowPoster(true);
+  };
+  const onHidePoster = () => {
+    setShowPoster(false);
+  };
 
   useEffect(() => {
     if (localStorage.getItem('nickname') !== nickname) {
@@ -189,6 +198,7 @@ function App() {
       ? 'quiz'
       : 'result';
 
+  if (showPoster) return <Poster onHide={onHidePoster} />;
   return (
     <div>
       <GoogleReCaptchaProvider
@@ -272,6 +282,7 @@ function App() {
                 evaluationTexts={evaluationTexts}
                 onStartOver={onStartOver}
                 onShare={() => setShowShareModal(true)}
+                onShowPoster={onShowPoster}
               />
             )}
           </div>

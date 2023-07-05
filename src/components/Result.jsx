@@ -8,7 +8,14 @@ import AutoBlurButton from './AutoBlurButton';
 
 import { useState } from 'react';
 
-const Result = ({ marks, onStartOver, quizs, evaluationTexts, onShare }) => {
+const Result = ({
+  marks,
+  onStartOver,
+  quizs,
+  evaluationTexts,
+  onShare,
+  onShowPoster,
+}) => {
   const [loading, setLoading] = useState(true);
 
   const [, badgeTitle, badgeBody, imgSrc] = evaluationTexts;
@@ -64,13 +71,22 @@ const Result = ({ marks, onStartOver, quizs, evaluationTexts, onShare }) => {
             </AutoBlurButton>
           </div>
 
-          <div>
+          <div className='mb-2'>
             <AutoBlurButton
               onClick={onStartOver}
               variant='light'
               className='px-4 fw-bold d-inline'
             >
               Ritenta
+            </AutoBlurButton>
+          </div>
+          <div>
+            <AutoBlurButton
+              onClick={onShowPoster}
+              variant='light'
+              className='px-4 fw-bold d-inline'
+            >
+              Hai già visto il poster di igiene delle mani?
             </AutoBlurButton>
           </div>
         </div>
