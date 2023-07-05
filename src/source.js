@@ -23,8 +23,8 @@ const sources = {
         <>
           <div>
             Secondo l’Istituto Superiore di Sanità il corretto lavaggio sociale
-            (acqua e sapone) dura tra i 40 e i 60 secondi (dall’inizio
-            all’asciugatura).
+            (acqua e sapone) dura tra i 40 e i 60 secondi (per l’intero processo
+            di lavaggio e asciugatura).
           </div>
         </>
       ),
@@ -37,7 +37,11 @@ const sources = {
         [1, 'Lavare le mani con acqua e sapone', {}],
         [2, 'Usare un prodotto specifico a base di alcol', {}],
         [3, 'Usare la candeggina pura', {}],
-        [4, 'Possiamo scegliere noi, avendo tutte la stessa durata', {}],
+        [
+          4,
+          'Possiamo scegliere noi poiché tutte le modalità hanno la stessa durata',
+          {},
+        ],
       ],
       answer: 2,
       explaination: (
@@ -96,9 +100,9 @@ const sources = {
           <div>
             Le mani sono spesso in contatto con diverse superfici, inclusi
             oggetti contaminati e parti del corpo che possono essere fonte di
-            microrganismi facili poi da trasmettere ad altre persone o superfici
-            ambientali. La durata e la tipologia di contatto tra le mani rende
-            la stretta di mano la modalità di saluto più a rischio.
+            microrganismi facili poi da trasmettere ad altre persone o a
+            superfici ambientali. La durata e la tipologia di contatto tra le
+            mani rende la stretta di mano la modalità di saluto più a rischio.
           </div>
         </>
       ),
@@ -106,7 +110,7 @@ const sources = {
     {
       id: 5,
       question:
-        'La presenza di anelli/bracciali può influire su una corretta igiene delle mani?',
+        'La presenza di anelli o bracciali può influire su una corretta igiene delle mani?',
       options: [
         [1, 'Vero', {}],
         [2, 'Falso', {}],
@@ -122,7 +126,7 @@ const sources = {
         <>
           <div>
             I monili (anelli, bracciali, ecc.) possono accumulare sporco, sudore
-            e detriti organici, fornendo un ambiente favorevole alla crescita di
+            e residui organici, fornendo un ambiente favorevole alla crescita di
             germi e impedire la corretta pulizia di tutta la pelle delle mani.
           </div>
         </>
@@ -180,7 +184,7 @@ const sources = {
         <>
           <div>
             Lavarsi le mani per un tempo sufficiente consente l’adeguata
-            rimozione di sporco e germi. Gli altri fattori di regola non
+            rimozione di sporco e germi. Gli altri fattori citati di regola non
             influiscono sull’efficacia dell’igiene delle mani.
           </div>
         </>
@@ -198,7 +202,7 @@ const sources = {
         ],
         [
           2,
-          'È possibile usare il prodotto a base di alcol in qualsiasi occasione poiché è pratico, efficace e si asciuga subito',
+          'È possibile usare il prodotto specifico a base di alcol in qualsiasi occasione poiché è pratico, efficace e si asciuga subito',
           {},
         ],
         [
@@ -241,8 +245,8 @@ const sources = {
         <>
           <div>
             Secondo l’Istituto Superiore di Sanità il corretto lavaggio sociale
-            (acqua e sapone) dura tra i 40 e i 60 secondi (dall’inizio
-            all’asciugatura).
+            (acqua e sapone) dura tra i 40 e i 60 secondi (per l’intero processo
+            di lavaggio e asciugatura).
           </div>
         </>
       ),
@@ -263,9 +267,9 @@ const sources = {
           <div>
             Le mani sono spesso in contatto con diverse superfici, inclusi
             oggetti contaminati e parti del corpo che possono essere fonte di
-            microrganismi facili poi da trasmettere ad altre persone o superfici
-            ambientali. La durata e la tipologia di contatto tra le mani rende
-            la stretta di mano la modalità di saluto più a rischio.
+            microrganismi facili poi da trasmettere ad altre persone o a
+            superfici ambientali. La durata e la tipologia di contatto tra le
+            mani rendono la stretta di mano la modalità di saluto più a rischio.
           </div>
         </>
       ),
@@ -285,9 +289,10 @@ const sources = {
         <>
           <div>
             L’alcol è un solvente con azione disidratante e può dissolvere gli
-            olii naturali e i lipidi che mantengono la pelle idratata, anche se
-            nei prodotti specifici sono contenuti emollienti proprio per questo
-            motivo. È comunque consigliabile utilizzare spesso creme idratanti.
+            oli naturali e i lipidi che mantengono la pelle integra e idratata,
+            anche se nei prodotti specifici sono contenuti emollienti proprio
+            per questo motivo. È comunque consigliabile utilizzare spesso creme
+            idratanti.
           </div>
         </>
       ),
@@ -316,7 +321,7 @@ const sources = {
                 display: 'block',
               }}
             />
-            Le fasi per una corretta tecnica di lavaggio sono 6, e cioè:
+            Le fasi per una corretta tecnica di lavaggio sono 6:
             <ol>
               <li>Strofinare i palmi tra loro</li>
               <li>
@@ -332,7 +337,7 @@ const sources = {
                 pollice sinistro e viceversa
               </li>
               <li>
-                Ruotare la punta delle dita sul palmo della mano sinistra e
+                Ruotare la punta delle dita sul palmo della mano opposta e
                 viceversa
               </li>
             </ol>
@@ -394,7 +399,7 @@ const sources = {
     {
       id: 15,
       question:
-        "Nel corso dell'assistenza già in atto a un paziente, prima di una procedura asettica (es. medicazione ferita chirurgica) è necessaria una nuova igiene delle mani?",
+        "Nel corso dell'assistenza già in atto a un paziente, prima di una procedura asettica (es. medicazione della ferita chirurgica) è necessaria una nuova igiene delle mani?",
       options: [
         [1, 'No', {}],
         [2, 'No, se si usano i guanti', {}],
@@ -427,7 +432,7 @@ const sources = {
             Il lavaggio sociale è quello con acqua e sapone, il lavaggio
             antisettico si effettua con un prodotto a base di alcol oppure con
             un sapone antisettico, il lavaggio chirurgico è un lavaggio
-            antisettico più esteso e di maggior durata. Il lavaggio palmare… non
+            antisettico più esteso e di maggior durata; il lavaggio palmare… non
             esiste 😄.
           </div>
         </>

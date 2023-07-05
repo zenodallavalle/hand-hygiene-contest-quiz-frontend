@@ -9,10 +9,10 @@ import capitalize from '../capitalize';
 
 const jobOptions = [
   [1, 'Medico/odontoiatra'],
-  [2, 'Professionista sanitario (infermiere, fisioterapista, ecc.)'],
+  [2, 'Professionista sanitario (infermiere, fisioterapista, ostetrica, ecc.)'],
   [3, 'Operatore socio-sanitario'],
   [4, 'Studente di medicina/odontoiatria'],
-  [5, 'Studente di professioni sanitarie'],
+  [5, 'Studente delle professioni sanitarie'],
   [6, 'Altra tipologia di operatore sanitario'],
 ];
 
@@ -76,11 +76,10 @@ const Start = ({
           <h5 className='fw-bold mb-4'>Ottieni ora il tuo badge animale!</h5>
           <Form.Control
             size='sm'
-            nickname={nickname}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
-            placeholder='Nickname'
+            placeholder='Nickname anonimo'
           />
           {clicked && !validateNickname(nickname) && (
             <small>
@@ -162,7 +161,7 @@ const Start = ({
               salvati sul nostro server. I dati raccolti saranno utilizzati
               esclusivamente in forma anonima e aggregata a fini epidemiologici
               e di ricerca sull’igiene delle mani. Altri usi al di fuori di
-              questi non saranno consentiti. Tutte le informazioni personali
+              questi non saranno permessi. Tutte le informazioni personali
               identificabili saranno rigorosamente protette e trattate
               conformemente alle leggi sulla privacy vigenti.
             </p>
