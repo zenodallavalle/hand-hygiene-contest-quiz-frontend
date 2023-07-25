@@ -100,16 +100,20 @@ const Credits = ({ view = 'start', ...props }) => {
         >
           <small>
             {view === 'quiz' || window.innerWidth < 300 ? (
-              <span className='me-1'>Crediti</span>
+              <span className='me-1'>
+                Programmato da Z. Dalla Valle
+                <br />
+                Crediti e privacy policy
+              </span>
             ) : (
               <>
-                <span className='me-1'>Un'idea di: M.E. Ales,</span>
-                {window.innerWidth < 320 && <br />}
-                <span className='me-1'>A. Antonelli,</span>
-                {window.innerWidth >= 320 && window.innerWidth < 530 && <br />}
-                <span className='me-1'>S. Borlini, Z. Dalla Valle,</span>
-                {window.innerWidth < 320 && <br />}
-                <span className='me-1'>M. Moro</span>
+                <span className='me-1'>
+                  Un'idea di: M.E. Ales, A. Antonelli,
+                </span>
+                {window.innerWidth < 530 && <br />}
+                <span className='me-1'>
+                  S. Borlini, Z. Dalla Valle, M. Moro
+                </span>
               </>
             )}
             <InlineIcon icon={creativeCommons} />
@@ -117,7 +121,11 @@ const Credits = ({ view = 'start', ...props }) => {
               <>
                 <br />
                 <span>
-                  <b>Clicca qui per ulteriori informazioni</b>
+                  Programmato da <b>Zeno Dalla Valle</b>
+                </span>
+                <br />
+                <span>
+                  <b>Clicca qui per ulteriori informazioni e privacy policy</b>
                 </span>
               </>
             )}
@@ -187,10 +195,10 @@ const Credits = ({ view = 'start', ...props }) => {
           <div>
             <span>
               Codice disponibile su GitHub e distribuito con licenza Creative
-              Commons.
+              Commons:
             </span>
-            <div>
-              <div>
+            <ul>
+              <li>
                 <a
                   href='https://github.com/zenodallavalle/hand-hygiene-contest-quiz-frontend'
                   target='_blank'
@@ -198,9 +206,9 @@ const Credits = ({ view = 'start', ...props }) => {
                 >
                   hand-hygiene-contest-quiz-frontend
                 </a>
-              </div>
+              </li>
 
-              <div>
+              <li>
                 <a
                   href='https://github.com/zenodallavalle/hand-hygiene-contest-quiz-backend'
                   target='_blank'
@@ -208,12 +216,19 @@ const Credits = ({ view = 'start', ...props }) => {
                 >
                   hand-hygiene-contest-quiz-backend
                 </a>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
           <div>
-            {process.env.REACT_APP_NAME} versione{' '}
+            {process.env.REACT_APP_NAME} ver. corrente:{' '}
             <i>{process.env.REACT_APP_VERSION}</i>
+          </div>
+          <div>
+            Per consultare la privacy policy{' '}
+            <a href='#' target='_blank' rel='noopener noreferrer'>
+              clicca qui
+            </a>
+            .
           </div>
         </Modal.Body>
       </Modal>

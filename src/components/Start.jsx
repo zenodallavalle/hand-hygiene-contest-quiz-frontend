@@ -172,6 +172,10 @@ const Start = ({
             className='px-4 py-2 text-dark fw-bold border-dark'
           >
             Inizia ora
+            <br />{' '}
+            <small>
+              <span className='fw-lighter'>e occhio al numero di batteri!</span>
+            </small>
           </AutoBlurButton>
         </div>
       </div>
