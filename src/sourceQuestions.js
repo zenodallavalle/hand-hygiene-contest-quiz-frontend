@@ -1,5 +1,7 @@
 import handHygiene from './assets/img/handHygiene.gif';
 
+// Don't use the spread operator here
+
 const questions = [
   {
     id: 1,
@@ -427,10 +429,8 @@ const compiledQuestions = questions.reduce((acc, q) => {
   if (acc[id]) {
     throw new Error(`Question with id ${id} already exists`);
   }
-  return {
-    ...acc,
-    [id]: q,
-  };
+  acc[id] = q;
+  return acc;
 }, {});
 
 export default compiledQuestions;
