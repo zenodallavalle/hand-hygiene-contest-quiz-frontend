@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "BUILD_PATH='./building' react-scripts build",
+    "build": "BUILD_PATH='./building' react-scripts build & cp ./src/sourceQuestions.js ./building/sourceQuestions.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
