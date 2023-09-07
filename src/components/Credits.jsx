@@ -223,13 +223,6 @@ const Credits = ({ view = 'start', ...props }) => {
             {process.env.REACT_APP_NAME} ver. corrente:{' '}
             <i>{process.env.REACT_APP_VERSION}</i>
           </div>
-          <div>
-            Per consultare la privacy policy{' '}
-            <a href='#' target='_blank' rel='noopener noreferrer'>
-              clicca qui
-            </a>
-            .
-          </div>
         </Modal.Body>
       </Modal>
     </div>
