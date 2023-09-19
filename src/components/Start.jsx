@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 import AutoBlurButton from './AutoBlurButton';
 
@@ -41,6 +42,10 @@ const Start = ({
 }) => {
   const [clicked, setCliked] = useState(false);
   const [isOperator, setIsOperator] = useState(undefined);
+
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const onToggleShowPrivacyPolicy = () =>
+    setShowPrivacyPolicy(!showPrivacyPolicy);
 
   useEffect(() => {
     if (isOperator === false) {
@@ -154,31 +159,69 @@ const Start = ({
             </>
           )}
 
-          <small>
-            <p className='fst-italic small mt-0 pt-0'>
-              Partecipando a questo quiz, autorizzi la raccolta dei tuoi dati
-              (nickname, indirizzo IP, professione e le risposte) che saranno
-              salvati sul nostro server. I dati raccolti saranno utilizzati
-              esclusivamente in forma anonima e aggregata a fini epidemiologici
-              e di ricerca sull’igiene delle mani. Altri usi al di fuori di
-              questi non saranno permessi. Tutte le informazioni personali
-              identificabili saranno rigorosamente protette e trattate
-              conformemente alle leggi sulla privacy vigenti.
-            </p>
-          </small>
+          <div>
+            <small>
+              <p className='fst-italic small mt-0 pt-0'>
+                Partecipando a questo quiz, autorizzi la raccolta di dati
+                anonimi per fini di ricerca sull’igiene delle mani.
+                <br />
+                <AutoBlurButton
+                  variant='link'
+                  className='p-0 ms-1'
+                  size='sm'
+                  onClick={onToggleShowPrivacyPolicy}
+                >
+                  Per ulteriori informazioni clicca qui
+                </AutoBlurButton>
+              </p>
+            </small>
+          </div>
           <AutoBlurButton
             onClick={!nickname.trim() ? () => setCliked(true) : onStartQuiz}
             variant='light'
             className='px-4 py-2 text-dark fw-bold border-dark'
           >
             Inizia ora
-            <br />{' '}
+            <br />
             <small>
               <span className='fw-lighter'>e occhio al numero di batteri!</span>
             </small>
           </AutoBlurButton>
         </div>
       </div>
+      <Modal
+        scrollable
+        show={showPrivacyPolicy}
+        onHide={onToggleShowPrivacyPolicy}
+      >
+        <Modal.Header closeButton>
+          <b>Policy trattamento dati</b>
+        </Modal.Header>
+        <Modal.Body>
+          Partecipando a questo quiz, autorizzi la raccolta e il trattamento dei
+          tuoi dati personali (nickname, indirizzo IP, professione e risposte)
+          che saranno conservati nell’infrastruttura informatica di Ospedale San
+          Raffaele fino al completamento degli studi e delle relative
+          pubblicazioni. Titolare del trattamento dei dati raccolti è Ospedale
+          San Raffaele S.r.l., con sede legale in Milano, via Olgettina n. 60,
+          20132, Cod. Fisc. e P.IVA 07636600962, e-mail:
+          hsrsanraffaele@hsr.postecert.it; il Responsabile della protezione dei
+          dati (DPO) è disponibile per qualsiasi chiarimento all’indirizzo
+          e-mail: dpo@hsr.it. I dati raccolti saranno utilizzati esclusivamente
+          in forma anonima e aggregata a fini epidemiologici e di ricerca
+          sull’igiene delle mani. I dati potranno essere diffusi in forma
+          anonima e aggregata attraverso pubblicazioni scientifiche e/o convegni
+          scientifici. Altri usi al di fuori di questi non saranno consentiti. I
+          dati potranno essere condivisi con i fornitori del Titolare, nominati
+          Responsabili del trattamento. Tutte le informazioni personali
+          identificabili saranno rigorosamente protette e trattate conformemente
+          alle leggi sulla privacy vigenti (Regolamento EU n. 679/2016 “GDPR” e
+          Codice Privacy). Puoi esercitare i diritti previsti dagli artt. 15-22
+          GDPR (accesso, revoca, rettifica, cancellazione, limitazione,
+          opposizione, reclamo al Garante Privacy etc.) scrivendo al Titolare o
+          al DPO ai contatti indicati.
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };
