@@ -198,7 +198,6 @@ function App() {
       ? 'quiz'
       : 'result';
 
-  if (showPoster) return <Poster onHide={onHidePoster} />;
   return (
     <div>
       <GoogleReCaptchaProvider
@@ -242,12 +241,14 @@ function App() {
               position: 'absolute',
               top: 0,
               left: 0,
-              bottom: view === 'quiz' ? 74 : 108,
+              bottom: showPoster ? 0 : view === 'quiz' ? 74 : 108,
               overflowY: 'auto',
               zIndex: 2,
             }}
           >
-            {view === 'start' ? (
+            {showPoster ? (
+              <Poster onHide={onHidePoster} />
+            ) : view === 'start' ? (
               <Start
                 quizUID={quizUID}
                 nickname={nickname}
@@ -293,7 +294,7 @@ function App() {
           evaluationTexts={evaluationTexts}
           startId={startId}
         />
-        <Credits view={view} />
+        {!showPoster && <Credits view={view} />}
       </GoogleReCaptchaProvider>
     </div>
   );
