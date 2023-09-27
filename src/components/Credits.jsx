@@ -125,7 +125,7 @@ const Credits = ({ view = 'start', ...props }) => {
                 </span>
                 <br />
                 <span>
-                  <b>Clicca qui per ulteriori informazioni</b>
+                  <b>Ulteriori informazioni qui</b>
                 </span>
               </>
             )}
