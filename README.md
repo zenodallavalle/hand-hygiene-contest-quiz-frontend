@@ -37,4 +37,4 @@ This project is licensed under the CC BY-NC-SA 4.0 License - see the [LICENSE](L
 
 ## Live
 
-The whole application is run [HERE](https://web.zenodallavalle.com/quiz/?r=gh).
+The whole application is run [HERE](https://url.zenodallavalle.com/quiz/?r=gh).
