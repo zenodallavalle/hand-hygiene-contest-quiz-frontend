@@ -13,7 +13,7 @@ This repository contains the code for the frontend of the Hand Hygiene Contest Q
 
 Data of the quiz is hard-coded in the frontend in `src/source.js` as well as evaluation logic.
 
-The frontend communicates with the backend via a REST API. The backend is available on GitHub aswell at [https://github.com/zenodallavalle/hand-hygiene-contest-quiz-backend](this link).
+The frontend communicates with the backend via a REST API. The backend is available on GitHub aswell at [this link](https://github.com/zenodallavalle/hand-hygiene-contest-quiz-backend).
 
 ## Setup
 
@@ -37,4 +37,4 @@ This project is licensed under the CC BY-NC-SA 4.0 License - see the [LICENSE](L
 
 ## Live
 
-The whole application is run [HERE](https://web.zenodallavalle.com/quiz/?r=gh).
+The whole application is run [HERE](https://url.zenodallavalle.com/quiz/?r=gh).
